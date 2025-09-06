@@ -1,0 +1,23 @@
+#root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input {
+  accent-color: purple;
+}
+
+
+.product-content table,
+.product-content th,
+.product-content td {
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+
+.product-content,
+.product-content td {
+  padding: 8px;
+  text-align: center;
+}

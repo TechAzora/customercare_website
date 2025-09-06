@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --main-color: #3e0564;
+  --white-color: #ffffff;
+  --secondary-color: #a780c4;
+}
+
+.bdr {
+  border: 1px solid red;
+}
+/* @font-face {
+  font-family: 'TrebuchetMS';
+  src: url('./assets/trebuchet/trebuc.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+} */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+@font-face {
+  font-family: 'TexGyreTermes';
+  src: url('/assets/texgyretermes-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TexGyreTermes';
+  src: url('/assets/texgyretermes-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TexGyreTermes';
+  src: url('/assets/texgyretermes-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'TexGyreTermes';
+  src: url('/assets/texgyretermes-bolditalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}

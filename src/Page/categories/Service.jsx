@@ -1,0 +1,157 @@
+import React from "react";
+import { Heading, Wrapper } from "../../components/ComponentsIndex";
+import { Link } from "react-router-dom";
+
+const ServicesSlider = () => {
+  // 🔹 Dummy Data (replace with API later)
+  const Services = [
+    {
+      id: 1,
+      name: "Priya Agarwal",
+      category: "Elder Care",
+      distance: "2.8 km",
+      rating: 5,
+      reviews: 28,
+      price: 450,
+      isAvailable: true,
+      thumbnail:
+        "https://via.placeholder.com/400x300.png?text=Priya+Agarwal", // replace with real image
+    },
+    {
+      id: 2,
+      name: "Ranjan Kumar",
+      category: "Elder Care",
+      distance: "2.8 km",
+      rating: 5,
+      reviews: 28,
+      price: 450,
+      isAvailable: true,
+      thumbnail:
+        "https://via.placeholder.com/400x300.png?text=Ranjan+Kumar",
+    },
+    {
+      id: 3,
+      name: "Rahul Yadav",
+      category: "Elder Care",
+      distance: "2.8 km",
+      rating: 5,
+      reviews: 28,
+      price: 450,
+      isAvailable: true,
+      thumbnail:
+        "https://via.placeholder.com/400x300.png?text=Rahul+Yadav",
+    },
+    {
+      id: 4,
+      name: "Priya Agarwal",
+      category: "Elder Care",
+      distance: "2.8 km",
+      rating: 5,
+      reviews: 28,
+      price: 450,
+      isAvailable: true,
+      thumbnail:
+        "https://via.placeholder.com/400x300.png?text=Priya+Agarwal",
+    },
+  ];
+
+  // 🔹 API Code (commented for now)
+  /*
+  import { useDispatch, useSelector } from "react-redux";
+  import { getAllServices } from "../../ReduxToolkit/Slice/Service";
+  import { useEffect } from "react";
+  import { useNavigate } from "react-router-dom";
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { Services, status } = useSelector((state) => state.Service);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(getAllServices());
+    }
+  }, [dispatch, status]);
+
+  const handleServiceClick = (service) => {
+    const slug = service.slug || "service";
+    navigate(`/service/${slug}`);
+  };
+  */
+
+  return (
+    <Wrapper className="container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Header */}
+      <div className="text-center mb-12">
+        <Heading className="text-2xl md:text-3xl font-semibold text-center mb-8">
+          Find Services Near You
+        </Heading>
+      </div>
+
+      {/* Grid Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {Services.map((service) => (
+          <div
+            key={service.id}
+            className="w-full max-w-sm mx-auto bg-white rounded-2xl shadow-lg border hover:shadow-xl transition-all duration-300"
+          >
+            {/* Image */}
+            <div className="relative">
+              <img
+                src={service.thumbnail}
+                alt={service.name}
+                className="w-full h-56 object-cover rounded-t-2xl"
+              />
+              {/* Availability Badge */}
+              {service.isAvailable && (
+                <span className="absolute top-3 left-3 bg-green-600 text-white text-xs px-3 py-1 rounded-full">
+                  Available
+                </span>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="p-5 text-left space-y-2">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {service.name}
+              </h3>
+              <p className="text-sm text-gray-600">{service.category}</p>
+
+              <div className="flex items-center text-sm text-gray-500 gap-2">
+                <span>📍 {service.distance}</span>
+              </div>
+
+              {/* <div className="flex items-center gap-1 text-yellow-500 text-sm">
+                ⭐ {service.rating}{" "}
+                <span className="text-gray-600">
+                  | {service.reviews} reviews
+                </span>
+              </div> */}
+
+              <p className="text-lg font-bold text-gray-900">
+                ₹{service.price}/day
+              </p>
+
+              <button
+                className="mt-3 w-full bg-[#205c64] text-white py-2 px-4 rounded-xl font-medium hover:bg-[#184950] transition"
+              >
+                Book Now
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Explore More */}
+      <div className="text-center mt-10">
+        <Link to="/service">
+         <button className="px-6 py-2 border border-gray-400 rounded-full hover:bg-gray-100 transition text-sm font-medium">
+          Explore More
+        </button>
+        </Link>
+       
+      </div>
+    </Wrapper>
+  );
+};
+
+export default ServicesSlider;
