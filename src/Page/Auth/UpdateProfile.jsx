@@ -7,7 +7,7 @@ import {useNavigate } from "react-router-dom";
 import CommanBanner from "../../components/Banners/CommanBanner";
 
 const UpdateProfile = () => {
-  const server = "http://139.59.16.89";
+  const server = "https://api.vittasarthi.com";
   const navigate = useNavigate();
 
   // Pre-filled data (you can fetch this from API if needed)

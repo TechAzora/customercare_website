@@ -12,7 +12,7 @@ const Login = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false); // 🔹 loading state
   const navigate = useNavigate();
-  const server = 'http://139.59.16.89';
+  const server = 'https://api.vittasarthi.com';
 
   const inputRefs = useRef([]);
 

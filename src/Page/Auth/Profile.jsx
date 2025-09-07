@@ -7,11 +7,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Phone, MapPin, Edit2, Plus, Trash2, Calendar } from "lucide-react";
 
 const Profile = () => {
-    const server = "http://139.59.16.89";
+    const server = "https://api.vittasarthi.com";
     const [profile, setProfile] = useState(null);
     const [family, setFamily] = useState([]);
+    const [bookings, setBookings] = useState([]);   // ✅ new state for bookings
     const [loading, setLoading] = useState(false);
-
+  console.log(bookings)
     // Modal state
     const [showModal, setShowModal] = useState(false);
     const [editingMember, setEditingMember] = useState(null);
@@ -25,7 +26,7 @@ const Profile = () => {
 
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
-    console.log(token)
+
     // Fetch Profile
     const fetchProfile = async () => {
         setLoading(true);
@@ -56,9 +57,24 @@ const Profile = () => {
         }
     };
 
+    // ✅ Fetch Bookings
+    const fetchBookings = async () => {
+        try {
+            const res = await axios.get(
+                `${server}/api/v1/customer/booking/getCustomerBookings`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            if (res.data.success) setBookings(res.data.data);
+        } catch (err) {
+            console.error(err);
+            toast.error("Error fetching bookings");
+        }
+    };
+
     useEffect(() => {
         fetchProfile();
         fetchFamily();
+        fetchBookings(); // ✅ call bookings
     }, []);
 
     const handleLogout = () => {
@@ -66,44 +82,35 @@ const Profile = () => {
         localStorage.removeItem("refreshToken");
         toast.success("Logged out successfully");
         setTimeout(() => navigate("/login"), 1000);
-        window.location.reload(false)
-
+        window.location.reload(false);
     };
 
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
-        const options = { year: "numeric", month: "long", day: "numeric" };
-        return new Date(dateStr).toLocaleDateString("en-GB", options);
+        return new Date(dateStr).toLocaleDateString("en-GB", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
     };
 
-    // Handle input change
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    // --- Family Modal handlers ---
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    // Open modal
     const openModal = (member = null) => {
         if (member) {
             setEditingMember(member);
             setFormData(member);
         } else {
             setEditingMember(null);
-            setFormData({
-                name: "",
-                gender: "",
-                age: "",
-                relation: "",
-                note: "",
-            });
+            setFormData({ name: "", gender: "", age: "", relation: "", note: "" });
         }
         setShowModal(true);
     };
 
-    // Create or Update
     const handleSave = async () => {
         try {
             if (editingMember) {
-                // Update
                 await axios.put(
                     `${server}/api/v1/customer/familyMember/updateFamilyMember/${editingMember.id}`,
                     formData,
@@ -111,7 +118,6 @@ const Profile = () => {
                 );
                 toast.success("Family member updated successfully");
             } else {
-                // Create
                 await axios.post(
                     `${server}/api/v1/customer/familyMember/createFamilyMember`,
                     formData,
@@ -127,7 +133,6 @@ const Profile = () => {
         }
     };
 
-    // Delete
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this member?")) return;
         try {
@@ -146,9 +151,7 @@ const Profile = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
-                <p className="text-lg font-semibold text-gray-600">
-                    Loading profile...
-                </p>
+                <p className="text-lg font-semibold text-gray-600">Loading profile...</p>
             </div>
         );
     }
@@ -168,7 +171,7 @@ const Profile = () => {
 
             {/* Content */}
             <div className="flex flex-col md:flex-row gap-8 p-6 max-w-6xl mx-auto w-full">
-                {/* Left - Image + Add Member */}
+                {/* Left */}
                 <div className="bg-white p-6 shadow-md rounded-xl w-full md:w-1/3 flex flex-col items-center">
                     <img
                         src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
@@ -180,7 +183,6 @@ const Profile = () => {
                             <Edit2 size={18} /> Edit Image
                         </button>
                     </Link>
-
                     <button
                         onClick={() => openModal()}
                         className="flex items-center gap-2 border border-[#2d6a74] px-6 py-2 rounded-full text-[#2d6a74] hover:bg-[#2d6a74] hover:text-white transition"
@@ -189,163 +191,112 @@ const Profile = () => {
                     </button>
                 </div>
 
-                {/* Right - Info */}
-                <div className="bg-white p-6 shadow-md rounded-xl w-full md:w-2/3">
+                {/* Right */}
+                <div className="bg-white p-6 shadow-md rounded-xl w-full md:w-2/3 space-y-10">
                     {/* Personal Info */}
-                    <h2 className="text-xl font-bold mb-4">Personal Info</h2>
-                    {profile && (
-                        <div className="space-y-4 mb-8">
-                            <div className="flex items-center gap-3 border rounded-lg p-3">
-                                <User size={20} className="text-gray-500" />
-                                <input
-                                    type="text"
-                                    disabled
-                                    value={profile.name}
-                                    className="w-full bg-transparent outline-none"
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-3 border rounded-lg p-3">
-                                <Calendar size={20} className="text-gray-500" />
-                                <input
-                                    type="text"
-                                    disabled
-                                    value={formatDate(profile.dob) || ""}
-                                    className="w-full bg-transparent outline-none"
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-3 border rounded-lg p-3">
-                                <MapPin size={20} className="text-gray-500" />
-                                <input
-                                    type="text"
-                                    disabled
-                                    value={profile.address || ""}
-                                    className="w-full bg-transparent outline-none"
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Family Info */}
-                    <h2 className="text-xl font-bold mb-4">Family Info</h2>
-                    <div className="space-y-4">
-                        {family.length === 0 ? (
-                            <p className="text-gray-500 text-center sm:text-left">
-                                No family members added yet.
-                            </p>
-                        ) : (
-                            family.map((member) => (
-                                <div
-                                    key={member.id}
-                                    className="p-4 border rounded-xl shadow-sm flex flex-col sm:flex-row gap-4 sm:items-start"
-                                >
-                                    {/* Avatar */}
-                                    <img
-                                        src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
-                                        alt={member.name}
-                                        className="w-20 h-20 sm:w-14 sm:h-14 rounded-full object-cover mx-auto sm:mx-0"
-                                    />
-
-                                    {/* Member details */}
-                                    <div className="flex-1 text-center sm:text-left">
-                                        <p className="font-semibold">{member.name}</p>
-                                        <p className="text-sm text-gray-600">
-                                            <span className="capitalize text-primary"> {member.relation}</span> • {member.age} yrs • {member.gender}
-                                        </p>
-                                        <p className="text-sm text-gray-500 mt-1">{member.note}</p>
-                                    </div>
-
-                                    {/* Action buttons */}
-                                    <div className="flex justify-center sm:justify-end gap-3">
-                                        <button
-                                            onClick={() => openModal(member)}
-                                            className="text-primary hover:underline text-sm"
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(member.id)}
-                                            className="text-red-500 hover:underline text-sm flex items-center gap-1"
-                                        >
-                                            <Trash2 size={14} /> Delete
-                                        </button>
-                                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold mb-4">Personal Info</h2>
+                        {profile && (
+                            <div className="space-y-4 mb-8">
+                                <div className="flex items-center gap-3 border rounded-lg p-3">
+                                    <User size={20} className="text-gray-500" />
+                                    <input type="text" disabled value={profile.name} className="w-full bg-transparent outline-none" />
                                 </div>
-                            ))
+                                <div className="flex items-center gap-3 border rounded-lg p-3">
+                                    <Calendar size={20} className="text-gray-500" />
+                                    <input type="text" disabled value={formatDate(profile.dob) || ""} className="w-full bg-transparent outline-none" />
+                                </div>
+                                <div className="flex items-center gap-3 border rounded-lg p-3">
+                                    <MapPin size={20} className="text-gray-500" />
+                                    <input type="text" disabled value={profile.address || ""} className="w-full bg-transparent outline-none" />
+                                </div>
+                            </div>
                         )}
                     </div>
 
+                    {/* Family Info */}
+                    <div>
+                        <h2 className="text-xl font-bold mb-4">Family Info</h2>
+                        <div className="space-y-4">
+                            {family.length === 0 ? (
+                                <p className="text-gray-500">No family members added yet.</p>
+                            ) : (
+                                family.map((member) => (
+                                    <div key={member.id} className="p-4 border rounded-xl shadow-sm flex flex-col sm:flex-row gap-4 sm:items-start">
+                                        <img src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png" alt={member.name} className="w-20 h-20 sm:w-14 sm:h-14 rounded-full object-cover" />
+                                        <div className="flex-1">
+                                            <p className="font-semibold">{member.name}</p>
+                                            <p className="text-sm text-gray-600">{member.relation} • {member.age} yrs • {member.gender}</p>
+                                            <p className="text-sm text-gray-500">{member.note}</p>
+                                        </div>
+                                        <div className="flex gap-3">
+                                            <button onClick={() => openModal(member)} className="text-primary hover:underline text-sm">Edit</button>
+                                            <button onClick={() => handleDelete(member.id)} className="text-red-500 hover:underline text-sm flex items-center gap-1">
+                                                <Trash2 size={14} /> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+
+                    {/* ✅ Bookings */}
+                    <div>
+                        <h2 className="text-xl font-bold mb-4">My Bookings</h2>
+                        <div className="space-y-4">
+                            {bookings.length === 0 ? (
+                                <p className="text-gray-500">No bookings yet.</p>
+                            ) : (
+                                bookings.map((booking) => {
+                                    const svc = booking.companySvc || booking.providerSvc;
+                                    const svcName = svc?.service?.name || "Unknown Service";
+                                    const providerName =
+                                        booking.providerSvc?.provider?.provider?.name ||
+                                        booking.companySvc?.company?.company?.companyName ||
+                                        "N/A";
+
+                                    return (
+                                        <div key={booking.id} className="p-4 border rounded-xl shadow-sm flex flex-col sm:flex-row justify-between">
+                                            <div>
+                                                <p className="font-semibold">{svcName}</p>
+                                                <p className="text-sm text-gray-600">Provider: {providerName}</p>
+                                                <p className="text-sm text-gray-500">From: {formatDate(booking.startDate)} → To: {formatDate(booking.endDate)}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-sm font-medium">₹{booking.totalAmount}</p>
+                                                <p className={`text-xs ${booking.status === "PENDING" ? "text-yellow-600" : "text-green-600"}`}>
+                                                    {booking.status}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* Modal */}
+            {/* Modal (Family) */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-                        <h2 className="text-xl font-bold mb-4">
-                            {editingMember ? "Edit Family Member" : "Add Family Member"}
-                        </h2>
-
+                        <h2 className="text-xl font-bold mb-4">{editingMember ? "Edit Family Member" : "Add Family Member"}</h2>
                         <div className="space-y-3">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full border rounded p-2"
-                            />
-
-                            <select
-                                name="gender"
-                                value={formData.gender}
-                                onChange={handleChange}
-                                required
-                                className="w-full border rounded p-2"
-                            >
-                                <option value="defalut">Select Gender</option>
+                            <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} className="w-full border rounded p-2" />
+                            <select name="gender" value={formData.gender} onChange={handleChange} className="w-full border rounded p-2">
+                                <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
-                            <input
-                                type="number"
-                                name="age"
-                                placeholder="Age"
-                                value={formData.age}
-                                onChange={handleChange}
-                                className="w-full border rounded p-2"
-                            />
-                            <input
-                                type="text"
-                                name="relation"
-                                placeholder="Relation"
-                                value={formData.relation}
-                                onChange={handleChange}
-                                className="w-full border rounded p-2"
-                            />
-                            <textarea
-                                name="note"
-                                placeholder="Note"
-                                value={formData.note}
-                                onChange={handleChange}
-                                className="w-full border rounded p-2"
-                            ></textarea>
+                            <input type="number" name="age" placeholder="Age" value={formData.age} onChange={handleChange} className="w-full border rounded p-2" />
+                            <input type="text" name="relation" placeholder="Relation" value={formData.relation} onChange={handleChange} className="w-full border rounded p-2" />
+                            <textarea name="note" placeholder="Note" value={formData.note} onChange={handleChange} className="w-full border rounded p-2"></textarea>
                         </div>
-
                         <div className="flex justify-end gap-3 mt-4">
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleSave}
-                                className="px-4 py-2 rounded bg-[#2d6a74] text-white hover:bg-[#1f4b52]"
-                            >
-                                {editingMember ? "Update" : "Save"}
-                            </button>
+                            <button onClick={() => setShowModal(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+                            <button onClick={handleSave} className="px-4 py-2 rounded bg-[#2d6a74] text-white hover:bg-[#1f4b52]">{editingMember ? "Update" : "Save"}</button>
                         </div>
                     </div>
                 </div>

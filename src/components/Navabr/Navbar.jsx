@@ -7,6 +7,7 @@ function Navbar() {
   const menuItems = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "Service", link: "/service" },
+    { id: 2, name: "Company Service", link: "/company-service" },
     // { id: 3, name: "Faqs", link: "/faqs" },
   ];
 

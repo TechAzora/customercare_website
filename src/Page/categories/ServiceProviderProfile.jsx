@@ -12,7 +12,7 @@ function ServiceProviderProfile() {
     const fetchProfile = async () => {
       try {
         const res = await fetch(
-          `http://139.59.16.89/api/v1/provider/auth/getProviderProfileById/${id}`
+          `https://api.vittasarthi.com/api/v1/provider/auth/getProviderProfileById/${id}`
         );
         const data = await res.json();
 

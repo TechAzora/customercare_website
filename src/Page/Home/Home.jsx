@@ -2,6 +2,7 @@ import React from "react";
 import Banners from "../../components/Banners/Banners";
 import ServicesSlider from "../categories/Service";
 import TipsGuides from "./Blog";
+import CompanyServiceHome from "../categories/CompnayService";
 
 
 function Home() {
@@ -12,6 +13,7 @@ function Home() {
     
       <Banners />
      <ServicesSlider/>
+     <CompanyServiceHome/>
      <TipsGuides/>
     </>
   );

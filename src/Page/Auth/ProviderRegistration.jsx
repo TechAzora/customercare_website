@@ -20,7 +20,7 @@ const ProviderRegistration = () => {
   const [tempTokens, setTempTokens] = useState(null);
   
   const navigate = useNavigate();
-  const server = 'http://139.59.16.89';
+  const server = 'https://api.vittasarthi.com';
   const inputRefs = useRef([]);
   const dispatch = useDispatch();
 

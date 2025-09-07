@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import CommanBanner from "../../components/Banners/CommanBanner";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProviderServices } from "../../ReduxToolkit/Slice/ProviderServicesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { getCompanyProviderService } from "../../ReduxToolkit/Slice/CompanyProviderServices";
 
-function BookingPage() {
+function CompanyBookingPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
-    const { providerServices, status } = useSelector(
-        (state) => state.providerServices
+    const { CompanyProviderServices } = useSelector(
+        (state) => state.CompanyProviderService
     );
     const dispatch = useDispatch();
 
 
     useEffect(() => {
         if (id) {
-            dispatch(getProviderServices(id));
+            dispatch(getCompanyProviderService(id));
         }
     }, [dispatch, id]);
 
@@ -264,7 +264,7 @@ const handleBooking = async () => {
           // ✅ Step 4: Create booking after wallet success
           const bookingPayload = {
             familyMemberId: bookingData.familyMemberId,
-            providerSvcId: bookingData.companySvcId, // ✅ correct field
+            companySvcId: bookingData.companySvcId, // ✅ correct field
             startDate: bookingData.startDate,
             endDate: bookingData.endDate,
             // If backend requires payment details, uncomment these:
@@ -358,7 +358,7 @@ const handleBooking = async () => {
                         <h2 className="text-xl font-semibold mb-4">Select Service</h2>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {providerServices.map((svc) => (
+                            {CompanyProviderServices.map((svc) => (
                                 <div
                                     key={svc.serviceId}
                                     onClick={() =>
@@ -704,4 +704,4 @@ const handleBooking = async () => {
     );
 }
 
-export default BookingPage;
+export default CompanyBookingPage;
