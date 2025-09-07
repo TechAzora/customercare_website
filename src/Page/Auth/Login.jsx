@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginImage } from '../../components/Img/ImportedImage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { logo } from '../../components/Img/ImportedImage';
 
 const Login = () => {
   const [step, setStep] = useState(1);
@@ -99,6 +100,10 @@ const Login = () => {
       {/* Right Form */}
       <div className="md:w-1/2 w-full  bg-[#2d6a74] flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md">
+        <div className="flex justify-center items-center">
+  <img src={logo} alt="Logo" className="h-12 w-auto" />
+</div>
+
           <h2 className="text-2xl font-bold mb-6">Sign In</h2>
 
           {step === 1 ? (

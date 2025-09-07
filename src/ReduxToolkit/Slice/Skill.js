@@ -1,52 +1,52 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {getCategories} from '../../Api_url';
+import { getSkills } from "../../Api_url";
 
-const token = localStorage.getItem("token"); // assuming you store token
+const token = localStorage.getItem("token"); // adjust if stored differently
 
-// 🔹 Thunk: Fetch categories
-export const getAllCategories = createAsyncThunk(
-  "categories/getAllCategories",
+// 🔹 Thunk: Fetch skills
+export const getAllSkills = createAsyncThunk(
+  "skills/getAllSkills",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        getCategories, 
+        getSkills, 
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      return response.data.data; // 👈 only the "data" array
+      return response.data.data; // 👈 returns array of skills
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-const CategorySlice = createSlice({
-  name: "categories",
+const SkillSlice = createSlice({
+  name: "skills",
   initialState: {
-    categories: [],
+    skills: [],
     status: "idle", // idle | loading | succeeded | failed
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllCategories.pending, (state) => {
+      .addCase(getAllSkills.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(getAllCategories.fulfilled, (state, action) => {
+      .addCase(getAllSkills.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.categories = action.payload; // [{id, name, services: []}]
+        state.skills = action.payload; 
       })
-      .addCase(getAllCategories.rejected, (state, action) => {
+      .addCase(getAllSkills.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
   },
 });
 
-export default CategorySlice.reducer;
+export default SkillSlice.reducer;

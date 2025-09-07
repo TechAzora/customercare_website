@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "../../components/ComponentsIndex";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Phone, MapPin, Edit2, Plus, Trash2 } from "lucide-react";
+import { User, Phone, MapPin, Edit2, Plus, Trash2, Calendar } from "lucide-react";
 
 const Profile = () => {
     const server = "http://139.59.16.89";
@@ -206,7 +206,7 @@ const Profile = () => {
                             </div>
 
                             <div className="flex items-center gap-3 border rounded-lg p-3">
-                                <Phone size={20} className="text-gray-500" />
+                                <Calendar size={20} className="text-gray-500" />
                                 <input
                                     type="text"
                                     disabled

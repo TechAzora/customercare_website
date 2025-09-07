@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { logo } from "../Img/ImportedImage";
+import { Menu, X } from "lucide-react"; // ✅ for hamburger icon
 
 function Navbar() {
   const menuItems = [
@@ -10,6 +12,7 @@ function Navbar() {
 
   const isLoggedIn = !!localStorage.getItem("accessToken"); // ✅ check token
   const [isSticky, setIsSticky] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // ✅ toggle state
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,19 +29,26 @@ function Navbar() {
 
   return (
     <nav
-      className={`w-full py-6 px-8  z-50 transition-all duration-300 ${
-        isSticky ? "fixed top-0 bg-[#fff4ea] shadow-sm" : "relative  bg-[#fff4ea]"
+      className={`w-full py-4 px-6 z-50 transition-all duration-300 ${
+        isSticky ? "fixed top-0 bg-[#fff4ea] shadow-sm" : "relative bg-[#fff4ea]"
       }`}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Center Menu */}
-        <div className="flex-1 flex justify-center space-x-8 text-gray-700">
+        {/* Left Logo */}
+        <div className="flex-shrink-0">
+          <Link to="/">
+            <img src={logo} alt="Logo" className="h-12 w-auto" />
+          </Link>
+        </div>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex flex-1 justify-center space-x-8 text-gray-700">
           {menuItems.map((item) => (
             <NavLink
               key={item.id}
               to={item.link}
               className={({ isActive }) =>
-                ` transition-colors ${
+                `transition-colors ${
                   isActive
                     ? "text-[#205c64] font-medium underline underline-offset-4"
                     : "hover:text-[#205c64]"
@@ -50,8 +60,8 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Right Button */}
-        <div className="md:absolute right-8">
+        {/* Desktop Right Button */}
+        <div className="hidden md:flex flex-shrink-0">
           {isLoggedIn ? (
             <Link
               to="/profile"
@@ -68,7 +78,48 @@ function Navbar() {
             </Link>
           )}
         </div>
+
+        {/* Mobile Hamburger Button */}
+        <div className="md:hidden flex items-center">
+          <button onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {isOpen && (
+        <div className="md:hidden mt-4 space-y-4 bg-[#fff4ea] p-4 rounded-lg shadow">
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.id}
+              to={item.link}
+              onClick={() => setIsOpen(false)} // close on click
+              className="block text-gray-700 hover:text-[#205c64] transition-colors"
+            >
+              {item.name}
+            </NavLink>
+          ))}
+
+          {isLoggedIn ? (
+            <Link
+              to="/profile"
+              onClick={() => setIsOpen(false)}
+              className="block bg-[#205c64] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors text-center"
+            >
+              Profile
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setIsOpen(false)}
+              className="block bg-[#205c64] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors text-center"
+            >
+              Sign In
+            </Link>
+          )}
+        </div>
+      )}
     </nav>
   );
 }

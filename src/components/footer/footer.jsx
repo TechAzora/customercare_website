@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {linkedin, facebook, instagram } from "../Img/ImportedImage";
+import {linkedin, facebook, instagram, logo } from "../Img/ImportedImage";
 
 const Footer = () => {
   const location = useLocation();
@@ -17,7 +17,11 @@ const Footer = () => {
         
         {/* Logo + Description */}
         <div>
-          <h2 className="text-2xl font-bold mb-3">LOGO</h2>
+           <div className="flex-shrink-0">
+                    <Link to="/">
+                      <img src={logo} alt="Logo" className="h-12 w-auto" />
+                    </Link>
+                  </div>
           <p className="text-sm text-gray-600 leading-relaxed max-w-sm">
             To check for diabetes, a doctor orders blood tests like the A1C test,
             Fasting Blood Sugar (FBS), Oral Glucose Tolerance Test (OGTT), or a
@@ -30,7 +34,7 @@ const Footer = () => {
         <div>
           <h4 className="text-black font-semibold mb-3">Customers</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/Login" className="hover:underline">Sign Up</Link></li>
+            <li><Link to="/provider-registration" className="hover:underline">Provider Registration</Link></li>
             <li><Link to="/service" className="hover:underline">Book a Service</Link></li>
             {/* <li><Link to="/content-hub" className="hover:underline">Content Hub</Link></li>p */}
           </ul>

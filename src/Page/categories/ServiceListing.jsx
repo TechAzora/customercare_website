@@ -2,51 +2,34 @@ import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import CommanBanner from "../../components/Banners/CommanBanner";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProviders } from "../../ReduxToolkit/Slice/Service";
+import { getAllCategories } from "../../ReduxToolkit/Slice/Category";
+import { getAllSkills } from "../../ReduxToolkit/Slice/Skill";
 
 const ServiceListing = () => {
-  const [providers, setProviders] = useState([]);
+  const dispatch = useDispatch();
+  const { providers, pagination, status } = useSelector((state) => state.Service);
+  const { categories } = useSelector((state) => state.categories);
+    const { skills } = useSelector((state) => state.skills);
+
+  console.log(categories)
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
-    const token = localStorage.getItem("accessToken");
-console.log(providers)
-const fetchProviders = async () => {
-  try {
-    setLoading(true);
-    const response = await axios.get(
-      `http://139.59.16.89/api/v1/provider/auth/getOnlineProvidersForWeb`,
-      {
-        params: {
-          search,
-          page,
-          limit: 10,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`, // make sure token is valid
-        },
-      }
-    );
-
-    if (response.data.success) {
-      setProviders(response.data.data.providers);
-      setTotalPages(response.data.data.pagination.totalPages);
-    }
-    setLoading(false);
-  } catch (error) {
-    console.error("Error fetching providers:", error.response || error);
-    setLoading(false);
-  }
-};
+  const [limit] = useState(10);
+  const [serviceCategoryId, setServiceCategoryId] = useState(""); // category filter
+  const [skillIds, setSkillIds] = useState(""); // 👈 skill filter
 
   useEffect(() => {
-    fetchProviders();
-  }, [search, page]);
+    dispatch(getAllProviders({ search, page, limit, serviceCategoryId, skillIds }));
+    dispatch(getAllCategories());
+     dispatch(getAllSkills());
+
+  }, [dispatch, search, page, limit, serviceCategoryId, skillIds]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(1); // reset to first page on new search
+    setPage(1);
   };
 
   return (
@@ -55,11 +38,47 @@ const fetchProviders = async () => {
 
       <div className="flex flex-col lg:flex-row gap-6 p-6">
         {/* Filters Sidebar */}
-        <div className="w-full lg:w-1/4 bg-white shadow rounded-xl p-5">
+        <div className="w-full lg:w-1/4 bg-white shadow rounded-xl p-5 space-y-6">
           <button className="bg-primary text-white w-full py-2 rounded-lg font-medium">
             Filters
           </button>
-          {/* Add your other filters here */}
+
+          {/* Category Filter */}
+          <div>
+            <h2 className="font-semibold mb-2">Select Category</h2>
+            <select className="border p-2 rounded w-full" onChange={(e) => {
+              setServiceCategoryId(e.target.value);
+              setPage(1);
+            }}>
+              <option value="">All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+
+
+          </div>
+          {/* Skill Filter */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Skill</label>
+            <select
+              value={skillIds}
+              onChange={(e) => {
+                setSkillIds(e.target.value);
+                setPage(1);
+              }}
+              className="w-full border rounded-lg p-2"
+            >
+              <option value="">All Skills</option>
+        {skills.map((skill) => (
+          <option key={skill.id} value={skill.id}>
+            {skill.name}
+          </option>
+        ))}
+            </select>
+          </div>
         </div>
 
         {/* Services Section */}
@@ -82,7 +101,8 @@ const fetchProviders = async () => {
           </div>
 
           {/* Loading */}
-          {loading && <p>Loading providers...</p>}
+          {status === "loading" && <p>Loading providers...</p>}
+          {status === "failed" && <p className="text-red-500">Error fetching providers</p>}
 
           {/* Cards Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -91,6 +111,13 @@ const fetchProviders = async () => {
                 key={provider.id}
                 className="border rounded-xl shadow-sm hover:shadow-md transition bg-white"
               >
+                 <div className="relative">
+                <img
+                  src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
+                  alt={provider.name}
+                  className="w-full h-56 object-cover rounded-t-2xl"
+                />
+              </div>
                 <div className="p-4">
                   <h3 className="font-semibold">{provider.name}</h3>
                   <p className="text-sm text-gray-600">{provider.address}</p>
@@ -117,11 +144,11 @@ const fetchProviders = async () => {
               Prev
             </button>
             <span className="px-3 py-1 border rounded">
-              {page} / {totalPages}
+              {page} / {pagination.totalPages}
             </span>
             <button
-              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={page === totalPages}
+              onClick={() => setPage((prev) => Math.min(prev + 1, pagination.totalPages))}
+              disabled={page === pagination.totalPages}
               className="px-3 py-1 border rounded disabled:opacity-50"
             >
               Next

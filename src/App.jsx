@@ -24,6 +24,8 @@ import BookingPage from "./Page/Booking/Booking";
 import Login from "./Page/Auth/Login";
 import UpdateProfile from "./Page/Auth/UpdateProfile";
 import Profile from "./Page/Auth/Profile";
+import ServiceProviderProfile from "./Page/categories/ServiceProviderProfile";
+import ProviderRegistration from "./Page/Auth/ProviderRegistration";
 
 // Helper to check token
 const isAuthenticated = () => {
@@ -72,6 +74,8 @@ const router = createBrowserRouter(
         }
       />
       <Route path="service" element={<ServiceListing />} />
+      <Route path="provider/:id" element={<ServiceProviderProfile />} />
+      <Route path="provider-registration" element={<ProviderRegistration />} />
       <Route path="booking/:id" element={<BookingPage />} />
       <Route path="contact" element={<ContactUs />} />
       <Route path="privacy-policy" element={<PrivacyPolicy />} />
