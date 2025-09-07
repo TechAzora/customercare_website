@@ -10,11 +10,11 @@ function Home() {
 
   return (
     <>
-    
+
       <Banners />
-     <ServicesSlider/>
-     <CompanyServiceHome/>
-     <TipsGuides/>
+      <ServicesSlider />
+      <CompanyServiceHome />
+      <TipsGuides />
     </>
   );
 }

@@ -10,58 +10,55 @@ const ServicesSlider = () => {
   const { Services, status } = useSelector((state) => state.Service);
 
   useEffect(() => {
-    // if (status === "idle") {
-    //   dispatch(getAllServices());
-    // }
-     dispatch(getAllServices());
-  }, [dispatch, status]);
+    dispatch(getAllServices());
+  }, [dispatch]);
 
   const handleServiceClick = (id) => {
     navigate(`/booking/${id}`);
   };
 
   return (
-    <Wrapper className="container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Wrapper className="container w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10">
       {/* Header */}
-      <div className="text-center mb-12">
-        <Heading className="text-2xl md:text-3xl font-semibold text-center mb-8">
+      <div className="text-center mb-8">
+        <Heading className="text-xl sm:text-2xl md:text-3xl font-semibold text-center">
           Find Services Near You
         </Heading>
       </div>
 
       {/* Grid Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {Services?.map((service) => (
           <div
             key={service.id}
-            className="w-full max-w-sm mx-auto bg-white rounded-2xl shadow-lg border hover:shadow-xl transition-all duration-300"
+            className="w-full bg-white rounded-xl shadow-md border hover:shadow-lg transition-all duration-300"
           >
-            {/* Image (placeholder since no image in API) */}
+            {/* Image */}
             <Link to={`/provider/${service.id}`}>
               <div className="relative">
                 <img
                   src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
                   alt={service.name}
-                  className="w-full h-56 object-cover rounded-t-2xl"
+                  className="w-full h-36 sm:h-44 md:h-52 object-cover rounded-t-xl"
                 />
               </div>
             </Link>
 
             {/* Content */}
-            <div className="p-5 text-left space-y-2">
-              <h3 className="text-lg font-semibold text-gray-900">
+            <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
+              <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">
                 {service.name}
               </h3>
-              <p className="text-sm text-gray-600">{service.gender}</p>
-              <p className="text-sm text-gray-600">📍 {service.address}</p>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600">{service.gender}</p>
+              <p className="text-xs sm:text-sm text-gray-600">📍 {service.address}</p>
+              <p className="text-xs sm:text-sm text-gray-600">
                 Pincode: {service.pincode}
               </p>
-              <p className="text-sm text-gray-600">📞 {service.mobile}</p>
+              <p className="text-xs sm:text-sm text-gray-600">📞 {service.mobile}</p>
 
               <button
                 onClick={() => handleServiceClick(service.id)}
-                className="mt-3 w-full bg-[#205c64] text-white py-2 px-4 rounded-xl font-medium hover:bg-[#184950] transition"
+                className="mt-2 w-full bg-[#205c64] text-white py-1.5 sm:py-2 px-3 rounded-lg text-xs sm:text-sm font-medium hover:bg-[#184950] transition"
               >
                 Book Now
               </button>
@@ -71,9 +68,9 @@ const ServicesSlider = () => {
       </div>
 
       {/* Explore More */}
-      <div className="text-center mt-10">
+      <div className="text-center mt-8">
         <Link to="/service">
-          <button className="px-6 py-2 border border-gray-400 rounded-full hover:bg-gray-100 transition text-sm font-medium">
+          <button className="px-5 py-2 border border-gray-400 rounded-full hover:bg-gray-100 transition text-xs sm:text-sm font-medium">
             Explore More
           </button>
         </Link>

@@ -81,8 +81,23 @@ const router = createBrowserRouter(
       <Route path="provider/:id" element={<ServiceProviderProfile />} />
       <Route path="compnay-provider/:id" element={<CompanyServiceProviderProfile />} />
       <Route path="provider-registration" element={<ProviderRegistration />} />
-      <Route path="booking/:id" element={<BookingPage />} />
-      <Route path="company-service-booking/:id" element={<CompanyBookingPage />} />
+      <Route
+        path="booking/:id"
+        element={
+          <PrivateRoute>
+            <BookingPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="company-service-booking/:id"
+        element={
+          <PrivateRoute>
+            <CompanyBookingPage />
+          </PrivateRoute>
+        }
+      />
+
       <Route path="contact" element={<ContactUs />} />
       <Route path="privacy-policy" element={<PrivacyPolicy />} />
       <Route path="terms-&-condition" element={<TermsConditions />} />
