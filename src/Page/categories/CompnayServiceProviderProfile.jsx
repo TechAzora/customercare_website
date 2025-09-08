@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CheckCircle, BadgeCheck, Briefcase, MapPin, Mail } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCompanyProviderService } from "../../ReduxToolkit/Slice/CompanyProviderServices";
 
 function CompanyServiceProviderProfile() {
-  const { id } = useParams(); // get id from URL
+  const { id } = useParams();
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { CompanyProviderServices } = useSelector(
+    (state) => state.CompanyProviderService
+  );
+  const dispatch = useDispatch();
+
+  // Fetch services
+  useEffect(() => {
+    if (id) {
+      dispatch(getCompanyProviderService(id));
+    }
+  }, [dispatch, id]);
+
+  // Fetch company profile
   useEffect(() => {
     const fetchCompany = async () => {
       try {
@@ -57,10 +72,7 @@ function CompanyServiceProviderProfile() {
 
         <div className="w-full border-t my-6"></div>
 
-        {/* <p className="text-gray-600 text-sm">Starting From</p>
-        <p className="text-2xl font-bold">₹450/day</p> */}
-
-        <button className="mt-6 bg-[#2d6a74] text-white w-full py-2 rounded-2xl hover:bg-[#24555d]">
+        <button className="mt-6 bg-[#2B5F75] text-white w-full py-2 rounded-2xl hover:bg-[#24555d]">
           <Link to={`/company-service-booking/${company.id}`}>Book Now</Link>
         </button>
       </div>
@@ -68,9 +80,10 @@ function CompanyServiceProviderProfile() {
       {/* Right Overview */}
       <div className="md:col-span-2 bg-white rounded-2xl shadow-md p-6 border">
         <h3 className="text-2xl font-semibold mb-6">Company Overview</h3>
+        <hr />
 
         {/* About */}
-        <div className="mb-6">
+        <div className="mb-6 mt-6">
           <h4 className="font-semibold mb-2">About</h4>
           <p className="text-gray-700">
             {company.about ||
@@ -78,16 +91,18 @@ function CompanyServiceProviderProfile() {
           </p>
         </div>
 
-        {/* Company Info */}
+        {/* Contact Info */}
         <div className="space-y-3 mb-6">
           <div className="flex items-center gap-3 border rounded-lg p-3">
             <Mail className="w-5 h-5 text-gray-500" />
-            <span>{company.email}</span>
+            <span>{company.email || "Not provided"}</span>
           </div>
 
           <div className="flex items-center gap-3 border rounded-lg p-3">
             <MapPin className="w-5 h-5 text-gray-500" />
-            <span>{company.address}, {company.pincode}</span>
+            <span>
+              {company.address ? `${company.address}, ${company.pincode}` : "Address not available"}
+            </span>
           </div>
         </div>
 
@@ -99,6 +114,58 @@ function CompanyServiceProviderProfile() {
             <p className="text-sm text-gray-600">
               Delivering quality healthcare and caregiving services
             </p>
+          </div>
+        </div>
+
+        {/* Services */}
+        <div>
+          <h4 className="text-xl font-semibold mb-3">Services</h4>
+          <hr />
+          <div className="mt-4">
+            {CompanyProviderServices && CompanyProviderServices.length > 0 ? (
+              <div className="space-y-3">
+                {CompanyProviderServices.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between border rounded-xl p-3 bg-white shadow-sm"
+                  >
+                    {/* Left: Icon + Name + Description */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">
+                        {/* Bag Icon */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6 text-gray-600"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6.75 7.5l.525-1.05a1.125 1.125 0 011.012-.618h7.426c.436 0 .832.247 1.012.618l.525 1.05M6.75 7.5h10.5M6.75 7.5A2.25 2.25 0 004.5 9.75v7.5A2.25 2.25 0 006.75 19.5h10.5a2.25 2.25 0 002.25-2.25v-7.5A2.25 2.25 0 0017.25 7.5M9 12h6"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="font-semibold">{item.service?.name || "Unnamed Service"}</p>
+                        <p className="text-sm text-gray-500">
+                          {item.service?.description || "No description"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Right: Price */}
+                    <div className="text-right font-semibold text-lg">
+                      ₹{item.pricePerDay}/day
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No services available</p>
+            )}
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getProviderServices } from "../../ReduxToolkit/Slice/ProviderServicesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Button, ButtonWhite } from "../../components/ComponentsIndex";
 
 function BookingPage() {
     const { id } = useParams();
@@ -30,7 +31,6 @@ function BookingPage() {
     const [paymentLoading, setPaymentLoading] = useState(false);
 
     const token = localStorage.getItem("accessToken");
-    console.log(token)
     const server = "https://api.vittasarthi.com";
 
     const [bookingData, setBookingData] = useState({
@@ -199,132 +199,132 @@ function BookingPage() {
     };
 
 
-const handleBooking = async () => {
-  // Show loading spinner
-  setPaymentLoading(true);
-
-  try {
-    const { total } = calculateTotal();
-
-    if (!total || total <= 0) {
-      alert("Invalid booking amount. Please check your booking details.");
-      setPaymentLoading(false);
-      return;
-    }
-
-    const res = await loadRazorpayScript();
-    if (!res) {
-      alert("Razorpay SDK failed to load. Check your internet.");
-      setPaymentLoading(false);
-      return;
-    }
-
-    // Step 1: Create Razorpay order
-    const orderRes = await axios.post(
-      "https://stayvilmaris-backend.vercel.app/api/v1/stayvilmaris/payment/createRazorpay",
-      {
-        amount: total * 100, // paisa
-        currency: "INR",
-      }
-    );
-
-    const { id: order_id, amount, currency } = orderRes.data;
-
-    // Step 2: Open Razorpay checkout
-    const options = {
-    //   key: "rzp_test_03ADIbjtraoMGJ",
-      key: "rzp_live_JvkjF5eE8Pz7NR",
-      amount: total * 100,
-      currency,
-      name: "Elder Care Services",
-      description: `${bookingData.serviceName} - ${calculateTotal().days} days`,
-      order_id,
-      handler: async function (paymentResponse) {
-        console.log("Payment Success:", paymentResponse);
+    const handleBooking = async () => {
+        // Show loading spinner
+        setPaymentLoading(true);
 
         try {
-          // ✅ Step 3: Add money to wallet
-          const walletPayload = {
-            amount: total, // in rupees
-            description: "Initial top-up",
-          };
+            const { total } = calculateTotal();
 
-          const walletRes = await axios.patch(
-            `${server}/api/v1/customer/wallet/addMoney`,
-            walletPayload,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
+            if (!total || total <= 0) {
+                alert("Invalid booking amount. Please check your booking details.");
+                setPaymentLoading(false);
+                return;
             }
-          );
-          console.log("Wallet API Response:", walletRes.data);
 
-          // ✅ Step 4: Create booking after wallet success
-          const bookingPayload = {
-            familyMemberId: bookingData.familyMemberId,
-            providerSvcId: bookingData.companySvcId, // ✅ correct field
-            startDate: bookingData.startDate,
-            endDate: bookingData.endDate,
-            // If backend requires payment details, uncomment these:
-            // razorpayPaymentId: paymentResponse.razorpay_payment_id,
-            // razorpayOrderId: paymentResponse.razorpay_order_id,
-            // razorpaySignature: paymentResponse.razorpay_signature,
-          };
-
-          const bookingRes = await axios.post(
-            `${server}/api/v1/customer/booking/createBookingRequest`,
-            bookingPayload,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
+            const res = await loadRazorpayScript();
+            if (!res) {
+                alert("Razorpay SDK failed to load. Check your internet.");
+                setPaymentLoading(false);
+                return;
             }
-          );
 
-          console.log("Booking API Response:", bookingRes.data);
+            // Step 1: Create Razorpay order
+            const orderRes = await axios.post(
+                "https://stayvilmaris-backend.vercel.app/api/v1/stayvilmaris/payment/createRazorpay",
+                {
+                    amount: total * 100, // paisa
+                    currency: "INR",
+                }
+            );
 
-          // ✅ Step 5: Show success
-          setStep(5);
-          toast.success("Booking created successfully!");
-        } catch (apiError) {
-          console.error("Booking flow error:", apiError.response?.data || apiError.message);
-          alert("Payment successful, but booking/wallet update failed.");
-        } finally {
-          setPaymentLoading(false);
+            const { id: order_id, amount, currency } = orderRes.data;
+
+            // Step 2: Open Razorpay checkout
+            const options = {
+                //   key: "rzp_test_03ADIbjtraoMGJ",
+                key: "rzp_live_JvkjF5eE8Pz7NR",
+                amount: total * 100,
+                currency,
+                name: "Elder Care Services",
+                description: `${bookingData.serviceName} - ${calculateTotal().days} days`,
+                order_id,
+                handler: async function (paymentResponse) {
+                    console.log("Payment Success:", paymentResponse);
+
+                    try {
+                        // ✅ Step 3: Add money to wallet
+                        const walletPayload = {
+                            amount: total, // in rupees
+                            description: "Initial top-up",
+                        };
+
+                        const walletRes = await axios.patch(
+                            `${server}/api/v1/customer/wallet/addMoney`,
+                            walletPayload,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                },
+                            }
+                        );
+                        console.log("Wallet API Response:", walletRes.data);
+
+                        // ✅ Step 4: Create booking after wallet success
+                        const bookingPayload = {
+                            familyMemberId: bookingData.familyMemberId,
+                            providerSvcId: bookingData.companySvcId, // ✅ correct field
+                            startDate: bookingData.startDate,
+                            endDate: bookingData.endDate,
+                            // If backend requires payment details, uncomment these:
+                            // razorpayPaymentId: paymentResponse.razorpay_payment_id,
+                            // razorpayOrderId: paymentResponse.razorpay_order_id,
+                            // razorpaySignature: paymentResponse.razorpay_signature,
+                        };
+
+                        const bookingRes = await axios.post(
+                            `${server}/api/v1/customer/booking/createBookingRequest`,
+                            bookingPayload,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    "Content-Type": "application/json",
+                                },
+                            }
+                        );
+
+                        console.log("Booking API Response:", bookingRes.data);
+
+                        // ✅ Step 5: Show success
+                        setStep(5);
+                        toast.success("Booking created successfully!");
+                    } catch (apiError) {
+                        console.error("Booking flow error:", apiError.response?.data || apiError.message);
+                        alert("Payment successful, but booking/wallet update failed.");
+                    } finally {
+                        setPaymentLoading(false);
+                    }
+                },
+                modal: {
+                    ondismiss: function () {
+                        console.log("Payment modal closed");
+                        setPaymentLoading(false);
+                    },
+                },
+                prefill: {
+                    name: profile?.name || "Customer",
+                    email: profile?.email || "customer@example.com",
+                    contact: profile?.phone || "9876543210",
+                },
+                theme: { color: "#2b5f75" },
+            };
+
+            const rzp = new window.Razorpay(options);
+
+            rzp.on("payment.failed", function (response) {
+                console.error("Payment failed:", response.error);
+                alert(`Payment failed: ${response.error.description}`);
+                setPaymentLoading(false);
+            });
+
+            rzp.open();
+        } catch (error) {
+            console.error("Booking error:", error);
+            alert("Something went wrong. Please try again.");
+            setPaymentLoading(false);
         }
-      },
-      modal: {
-        ondismiss: function () {
-          console.log("Payment modal closed");
-          setPaymentLoading(false);
-        },
-      },
-      prefill: {
-        name: profile?.name || "Customer",
-        email: profile?.email || "customer@example.com",
-        contact: profile?.phone || "9876543210",
-      },
-      theme: { color: "#205c64" },
     };
-
-    const rzp = new window.Razorpay(options);
-
-    rzp.on("payment.failed", function (response) {
-      console.error("Payment failed:", response.error);
-      alert(`Payment failed: ${response.error.description}`);
-      setPaymentLoading(false);
-    });
-
-    rzp.open();
-  } catch (error) {
-    console.error("Booking error:", error);
-    alert("Something went wrong. Please try again.");
-    setPaymentLoading(false);
-  }
-};
 
 
     const getSelectedFamilyMember = () => {
@@ -339,16 +339,29 @@ const handleBooking = async () => {
         <>
             <CommanBanner heading={"Booking"} />
             <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-10">
+
                 {/* Progress Bar */}
                 {step <= 4 && (
                     <div className="flex items-center justify-between mb-6">
                         {[1, 2, 3, 4].map((s) => (
                             <div
                                 key={s}
-                                className={`flex-1 h-2 mx-1 rounded-full ${step >= s ? "bg-teal-700" : "bg-gray-300"
+                                className={`flex-1 h-2 mx-1 rounded-full ${step >= s ? "bg-[#2B5F75]" : "bg-gray-300"
                                     }`}
                             ></div>
                         ))}
+                    </div>
+                )}
+                {/* steps */}
+                {step <= 4 && (
+                    <div className="flex items-center justify-between mb-6">
+                        <span className="text-sm font-medium text-gray-600">Step {step} of 4</span>
+                        <span className="text-sm font-medium text-gray-800">
+                            {step === 1 && "Service Selection"}
+                            {step === 2 && "Select Dates"}
+                            {step === 3 && "Assign Family Member"}
+                            {step === 4 && "Review & Confirm"}
+                        </span>
                     </div>
                 )}
 
@@ -357,7 +370,7 @@ const handleBooking = async () => {
                     <div>
                         <h2 className="text-xl font-semibold mb-4">Select Service</h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             {providerServices.map((svc) => (
                                 <div
                                     key={svc.serviceId}
@@ -369,13 +382,13 @@ const handleBooking = async () => {
                                             price: svc.pricePerDay, // use pricePerDay
                                         })
                                     }
-                                    className={`p-4 border rounded-xl text-center cursor-pointer transition-all ${bookingData.companySvcId === svc.id
-                                            ? "border-teal-700 bg-teal-50"
-                                            : "hover:border-teal-700"
+                                    className={`p-4 border rounded-xl text-left cursor-pointer transition-all ${bookingData.companySvcId === svc.id
+                                        ? "border-[#2B5F75]"
+                                        : "hover:border-[#2B5F75]"
                                         }`}
-                                >
+                                >   <p className="bi bi-briefcase"></p>
                                     <p className="text-sm">{svc.service.name}</p>
-                                    <p className="font-semibold text-teal-700 mt-2">
+                                    <p className="font-semibold text-[#2B5F75] mt-2 text-lg">
                                         ₹{svc.pricePerDay}/Day
                                     </p>
                                 </div>
@@ -442,12 +455,9 @@ const handleBooking = async () => {
                     <div>
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-semibold">Assign Family Member</h2>
-                            <button
-                                onClick={() => setShowAddFamilyModal(true)}
-                                className="px-4 py-2 bg-teal-700 text-white rounded-full text-sm"
-                            >
-                                ➕ Add Family Member
-                            </button>
+
+
+                            <ButtonWhite children={" Add Family Member"} icon="plus" onClick={() => setShowAddFamilyModal(true)} />
                         </div>
 
                         {family.length === 0 ? (
@@ -466,25 +476,37 @@ const handleBooking = async () => {
                                                 familyMemberId: member.id,
                                             })
                                         }
-                                        className={`p-4 border rounded-xl flex items-center gap-3 cursor-pointer transition-all ${bookingData.familyMemberId === member.id
-                                                ? "border-teal-700 bg-teal-50"
-                                                : "hover:border-teal-700"
+                                        className={`p-4 border rounded-2xl cursor-pointer transition-all shadow-sm ${bookingData.familyMemberId === member.id
+                                            ? "border-[#2B5F75] "
+                                            : "hover:border-[#2B5F75]"
                                             }`}
                                     >
-                                        <img
-                                            src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
-                                            alt={member.name}
-                                            className="w-12 h-12 rounded-full"
-                                        />
-                                        <div>
-                                            <p className="font-semibold">{member.name}</p>
-                                            <p className="text-xs text-gray-500">
-                                                {member.relation} • {member.age} yrs • {member.gender}
-                                            </p>
+                                        {/* Top Section */}
+                                        <div className="flex items-center gap-3">
+                                            <img
+                                                src={
+                                                    member.image ||
+                                                    "https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
+                                                }
+                                                alt={member.name}
+                                                className="w-14 h-14 rounded-full border-1 border-primary"
+                                            />
+                                            <div>
+                                                <p className="font-semibold text-lg">{member.name}</p>
+                                                <p className="text-sm text-gray-500 capitalize flex items-center gap-2">
+                                                    {member.relation} <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span> {member.age}
+                                                </p>
+                                            </div>
                                         </div>
+
+                                        {/* Note Section */}
+                                        {member.note && (
+                                            <p className="text-sm text-gray-500 mt-3">{member.note}</p>
+                                        )}
                                     </div>
                                 ))}
                             </div>
+
                         )}
 
                         {!canProceedToNext() && family.length > 0 && (
@@ -498,22 +520,59 @@ const handleBooking = async () => {
                     <div>
                         <h2 className="text-xl font-semibold mb-4">Review & Confirm</h2>
                         <div className="space-y-4">
-                            <div className="p-4 border rounded-lg bg-gray-50">
-                                <h3 className="font-semibold mb-3">Booking Summary</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                        <p><strong>Service:</strong> {bookingData.serviceName}</p>
-                                        <p><strong>Rate:</strong> ₹{bookingData.price}/day</p>
+                            <div className="p-4 border rounded-xl bg-white">
+                                {/* Heading with icon */}
+                                <div className="flex items-center gap-2 mb-4">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="w-5 h-5"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M6.75 7.5l.525-1.05a1.125 1.125 0 011.012-.618h7.426c.436 0 .832.247 1.012.618l.525 1.05M6.75 7.5h10.5M6.75 7.5A2.25 2.25 0 004.5 9.75v7.5A2.25 2.25 0 006.75 19.5h10.5a2.25 2.25 0 002.25-2.25v-7.5A2.25 2.25 0 0017.25 7.5M9 12h6"
+                                        />
+                                    </svg>
+                                    <h3 className="font-semibold">Service Details</h3>
+                                </div>
+
+                                {/* Details */}
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600">Service Type</span>
+                                        <span className="font-medium">{bookingData.serviceName}</span>
                                     </div>
-                                    <div>
-                                        <p><strong>Start Date:</strong> {new Date(bookingData.startDate).toLocaleDateString()}</p>
-                                        <p><strong>End Date:</strong> {new Date(bookingData.endDate).toLocaleDateString()}</p>
-                                        <p><strong>Duration:</strong> {calculateTotal().days} days</p>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600">Duration</span>
+                                        <span className="font-medium">{calculateTotal().days} Days</span>
                                     </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600">Date</span>
+                                        <span className="font-medium">
+                                            {new Date(bookingData.startDate).toLocaleDateString()} –{" "}
+                                            {new Date(bookingData.endDate).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    {/* <div className="flex justify-between">
+                                        <span className="text-gray-600">Time</span>
+                                        <span className="font-medium">{bookingData.time || "10:00 am"}</span>
+                                    </div> */}
+                                    {/* <div className="flex justify-between">
+                                        <span className="text-gray-600">Family Member</span>
+                                        <span className="font-medium">
+                                            {bookingData.familyMemberName || "Arjun Sharma"}
+                                        </span>
+                                    </div> */}
                                 </div>
                             </div>
 
-                            <div className="p-4 border rounded-lg bg-gray-50">
+
+
+                            <div className="p-4 border rounded-3xl">
                                 <h3 className="font-semibold mb-3">Patient Details</h3>
                                 {getSelectedFamilyMember() && (
                                     <div className="flex items-center gap-3">
@@ -532,10 +591,10 @@ const handleBooking = async () => {
                                 )}
                             </div>
 
-                            <div className="p-4 border-2 border-teal-700 rounded-lg bg-teal-50">
+                            <div className="p-4 border border-[#2B5F75] rounded-3xl">
                                 <div className="flex justify-between items-center">
                                     <span className="text-lg font-semibold">Total Amount:</span>
-                                    <span className="text-2xl font-bold text-teal-700">₹{calculateTotal().total}</span>
+                                    <span className="text-2xl font-bold text-[#2B5F75]">₹{calculateTotal().total}</span>
                                 </div>
                                 <div className="text-sm text-gray-600 mt-1">
                                     ({calculateTotal().days} days × ₹{bookingData.price})
@@ -556,7 +615,7 @@ const handleBooking = async () => {
                         </p>
                         <button
                             onClick={() => navigate('/profile')}
-                            className="px-6 py-2 bg-teal-700 text-white rounded-full"
+                            className="px-6 py-2 bg-[#2B5F75] text-white rounded-full"
                         >
                             View My Bookings
                         </button>
@@ -565,29 +624,30 @@ const handleBooking = async () => {
 
                 {/* Navigation Buttons */}
                 {step <= 4 && (
-                    <div className="flex justify-between mt-8">
+                    <div className="flex mt-8 gap-4">
                         <button
                             onClick={prevStep}
                             disabled={step === 1 || paymentLoading}
-                            className="px-6 py-2 border rounded-full text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                            className="w-1/2 px-6 py-3 border rounded-full text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             Back
                         </button>
                         <button
                             onClick={step === 4 ? handleBooking : nextStep}
                             disabled={!canProceedToNext() || paymentLoading}
-                            className={`px-6 py-2 rounded-full flex items-center gap-2 ${canProceedToNext() && !paymentLoading
-                                    ? "bg-teal-700 text-white hover:bg-teal-800"
-                                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            className={`w-1/2 px-6 py-3 rounded-full flex items-center justify-center gap-2 ${canProceedToNext() && !paymentLoading
+                                ? "bg-[#2B5F75] text-white hover:bg-teal-800"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                 }`}
                         >
                             {paymentLoading && step === 4 && (
                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
                             )}
-                            {step === 4 ?
-                                (paymentLoading ? "Processing Payment..." : "Confirm & Pay")
-                                : "Continue"
-                            }
+                            {step === 4
+                                ? paymentLoading
+                                    ? "Processing Payment..."
+                                    : "Confirm & Pay"
+                                : "Continue"}
                         </button>
                     </div>
                 )}
@@ -680,21 +740,23 @@ const handleBooking = async () => {
                             </div>
 
                             <div className="flex justify-end gap-2 pt-4">
-                                <button
+                                {/* <button
                                     type="button"
-                                    onClick={() => setShowAddFamilyModal(false)}
                                     className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50"
-                                    disabled={loading}
                                 >
-                                    Cancel
-                                </button>
-                                <button
+
+                                </button> */}
+                                <ButtonWhite onClick={() => setShowAddFamilyModal(false)} disabled={loading} children={"Cancel"}
+
+                                />
+                                {/* <button
                                     type="submit"
-                                    className="px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 disabled:opacity-50"
+                                    className="px-4 py-2 bg-[#2B5F75] text-white rounded-lg hover:bg-teal-800 disabled:opacity-50"
                                     disabled={loading}
                                 >
-                                    {loading ? "Adding..." : "Add Member"}
-                                </button>
+                                    
+                                </button> */}
+                                <Button type="submit">{loading ? "Adding..." : "Add Member"}</Button>
                             </div>
                         </form>
                     </div>

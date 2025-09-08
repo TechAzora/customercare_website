@@ -5,14 +5,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button } from "../../components/ComponentsIndex";
 import { Link, useNavigate } from "react-router-dom";
 import { User, MapPin, Edit2, Plus, Trash2, Calendar } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
   const server = "https://api.vittasarthi.com";
   const [profile, setProfile] = useState(null);
   const [family, setFamily] = useState([]);
-  const [bookings, setBookings] = useState([]); // ✅ new state for bookings
+  const [bookings, setBookings] = useState([]); 
   const [loading, setLoading] = useState(false);
-
+ 
   // Modal state
   const [showModal, setShowModal] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
@@ -162,40 +163,41 @@ const Profile = () => {
   return (
     <div className="bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-[#2d6a74] text-white flex justify-between items-center px-4 py-3 md:px-6 md:py-4 shadow">
+      <div className="bg-[#2B5F75] text-white flex justify-between items-center px-4 py-3 md:px-6 md:py-4 shadow">
         <h1 className="text-lg md:text-xl font-bold">My Profile</h1>
         <Button
           onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-sm md:text-base"
+          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-2xl text-sm md:text-base"
         >
           Logout
         </Button>
       </div>
 
       {/* Content */}
-      <div className="flex flex-col md:flex-row gap-4 md:gap-8 p-4 md:p-6 max-w-6xl mx-auto w-full">
+      <div className="flex flex-col md:flex-row   p-4 md:p-6 max-w-6xl mx-auto w-full">
         {/* Left */}
-        <div className="bg-white p-4 md:p-6 shadow-md rounded-xl w-full md:w-1/3 flex flex-col items-center">
+        <div className=" p-4 md:p-6 border-r  w-full md:w-1/3 flex flex-col items-center">
           <img
             src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
             alt="Profile"
-            className="w-24 h-24 md:w-40 md:h-40 object-cover rounded-xl mb-3 md:mb-4 border-2 md:border-4 border-gray-200"
+            className="w-24 h-24 md:w-40 md:h-40 object-cover rounded-3xl mb-3 md:mb-4 border-2 md:border-4 border-gray-200"
           />
           <Link to="/update_profile">
-            <button className="flex items-center gap-1 md:gap-2 text-[#2d6a74] font-medium text-sm md:text-base mb-4">
-              <Edit2 size={16} className="md:w-5 md:h-5" /> Edit Image
+            <button className="flex items-center gap-1 md:gap-2 text-[#2B5F75] font-medium text-sm md:text-base mb-4">
+              <Edit2 size={16} className="md:w-5 md:h-5" /> Edit Profile
             </button>
           </Link>
+ <hr />
           <button
             onClick={() => openModal()}
-            className="flex items-center gap-1 md:gap-2 border border-[#2d6a74] px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[#2d6a74] hover:bg-[#2d6a74] hover:text-white transition text-sm md:text-base"
+            className="flex items-center gap-1 md:gap-2 border border-[#2B5F75] px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[#2B5F75] hover:bg-[#2B5F75] hover:text-white transition text-sm md:text-base"
           >
             <Plus size={16} className="md:w-5 md:h-5" /> Add Member
           </button>
         </div>
 
         {/* Right */}
-        <div className="bg-white p-4 md:p-6 shadow-md rounded-xl w-full md:w-2/3 space-y-6 md:space-y-10">
+        <div className=" p-4 md:p-6  rounded-3xl w-full md:w-2/3 space-y-6 md:space-y-10">
           {/* Personal Info */}
           <div>
             <h2 className="text-lg md:text-xl font-bold mb-3 md:mb-4">
@@ -203,7 +205,7 @@ const Profile = () => {
             </h2>
             {profile && (
               <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-                <div className="flex items-center gap-2 md:gap-3 border rounded-lg p-2 md:p-3 text-sm md:text-base">
+                <div className="flex items-center gap-2 md:gap-3 border rounded-2xl p-2 md:p-3 text-sm md:text-base">
                   <User size={18} className="text-gray-500" />
                   <input
                     type="text"
@@ -212,7 +214,7 @@ const Profile = () => {
                     className="w-full bg-transparent outline-none"
                   />
                 </div>
-                <div className="flex items-center gap-2 md:gap-3 border rounded-lg p-2 md:p-3 text-sm md:text-base">
+                <div className="flex items-center gap-2 md:gap-3 border rounded-2xl p-2 md:p-3 text-sm md:text-base">
                   <Calendar size={18} className="text-gray-500" />
                   <input
                     type="text"
@@ -221,7 +223,7 @@ const Profile = () => {
                     className="w-full bg-transparent outline-none"
                   />
                 </div>
-                <div className="flex items-center gap-2 md:gap-3 border rounded-lg p-2 md:p-3 text-sm md:text-base">
+                <div className="flex items-center gap-2 md:gap-3 border rounded-2xl p-2 md:p-3 text-sm md:text-base">
                   <MapPin size={18} className="text-gray-500" />
                   <input
                     type="text"
@@ -244,43 +246,58 @@ const Profile = () => {
                 No family members added yet.
               </p>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-1 gap-3 md:gap-4">
-                {family.map((member) => (
-                  <div
-                    key={member.id}
-                    className="p-3 md:p-4 border rounded-xl shadow-sm flex flex-col sm:flex-row gap-3 sm:items-start text-sm md:text-base"
-                  >
-                    <img
-                      src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
-                      alt={member.name}
-                      className="w-14 h-14 md:w-20 md:h-20 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <p className="font-semibold">{member.name}</p>
-                      <p className="text-xs md:text-sm text-gray-600">
-                        {member.relation} • {member.age} yrs • {member.gender}
-                      </p>
-                      <p className="text-xs md:text-sm text-gray-500">
-                        {member.note}
-                      </p>
-                    </div>
-                    <div className="flex gap-2 md:gap-3">
-                      <button
-                        onClick={() => openModal(member)}
-                        className="text-primary hover:underline text-xs md:text-sm"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(member.id)}
-                        className="text-red-500 hover:underline text-xs md:text-sm flex items-center gap-1"
-                      >
-                        <Trash2 size={12} className="md:w-4 md:h-4" /> Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+           <div className="grid grid-cols-1 gap-3 md:gap-4">
+  {family.map((member) => (
+    <div
+      key={member.id}
+      className="p-4 border rounded-2xl shadow-sm flex flex-col gap-3 text-sm md:text-base"
+    >
+      {/* Top section: image + name + actions */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <img
+            src={
+              member.image ||
+              "https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
+            }
+            alt={member.name}
+            className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover"
+          />
+          <div>
+            <p className="font-semibold text-base md:text-lg">{member.name}</p>
+            <p className="text-sm text-gray-600 flex items-center gap-2">
+              {member.relation}{" "}
+              <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>{" "}
+              {member.age}
+            </p>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-4">
+          <button
+            onClick={() => openModal(member)}
+            className="text-gray-700 hover:underline text-sm"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(member.id)}
+            className="text-red-500 hover:underline text-sm flex items-center gap-1"
+          >
+            <Trash2 size={14} /> Delete
+          </button>
+        </div>
+      </div>
+
+      {/* Note section */}
+      {member.note && (
+        <p className="text-sm text-gray-500">{member.note}</p>
+      )}
+    </div>
+  ))}
+</div>
+
             )}
           </div>
 
@@ -304,7 +321,7 @@ const Profile = () => {
                   return (
                     <div
                       key={booking.id}
-                      className="p-3 md:p-4 border rounded-xl shadow-sm flex flex-col sm:flex-row justify-between text-sm md:text-base"
+                      className="p-3 md:p-4 border rounded-3xl shadow-sm flex flex-col sm:flex-row justify-between text-sm md:text-base"
                     >
                       <div>
                         <p className="font-semibold">{svcName}</p>
@@ -342,7 +359,7 @@ const Profile = () => {
       {/* ✅ Family Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-xl w-96 shadow-lg">
+          <div className="bg-white p-6 rounded-3xl w-96 shadow-lg">
             <h2 className="text-lg font-bold mb-4">
               {editingMember ? "Edit Member" : "Add Member"}
             </h2>
@@ -354,7 +371,7 @@ const Profile = () => {
                 placeholder="Name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-2xl px-3 py-2"
               />
               <input
                 type="text"
@@ -362,7 +379,7 @@ const Profile = () => {
                 placeholder="Relation"
                 value={formData.relation}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-2xl px-3 py-2"
               />
               <input
                 type="number"
@@ -370,13 +387,13 @@ const Profile = () => {
                 placeholder="Age"
                 value={formData.age}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-2xl px-3 py-2"
               />
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-2xl px-3 py-2"
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -388,20 +405,20 @@ const Profile = () => {
                 placeholder="Note"
                 value={formData.note}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
+                className="w-full border rounded-2xl px-3 py-2"
               />
             </div>
 
             <div className="flex justify-end gap-3 mt-4">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
+                className="px-4 py-2 border rounded-2xl text-gray-600 hover:bg-gray-100"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-[#2d6a74] text-white rounded-lg hover:bg-[#24565d]"
+                className="px-4 py-2 bg-[#2B5F75] text-white rounded-2xl hover:bg-[#24565d]"
               >
                 Save
               </button>

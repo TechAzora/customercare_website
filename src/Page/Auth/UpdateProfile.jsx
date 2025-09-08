@@ -69,7 +69,7 @@ console.log(token)
    
     <div className="flex justify-center items-center  bg-gray-100 p-4">
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
-        <h2 className="text-xl font-bold mb-6 text-center text-[#2d6a74]">
+        <h2 className="text-xl font-bold mb-6 text-center text-[#2B5F75]">
          Update Details
         </h2>
 
@@ -158,7 +158,7 @@ console.log(token)
             className={`col-span-2 py-3 rounded-full text-white font-semibold shadow-md ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-[#2d6a74] hover:bg-[#24555d]"
+                : "bg-[#2B5F75] hover:bg-[#24555d]"
             }`}
           >
             {loading ? "Updating..." : "Update Profile"}

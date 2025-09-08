@@ -42,7 +42,7 @@ const ProviderSuccess = () => {
         {/* <div className="mt-6">
           <Button
             onClick={() => navigate("/provider/dashboard")}
-            className="bg-[#2d6a74] text-white hover:bg-[#24555d] px-6 py-2 rounded-lg"
+            className="bg-[#2B5F75] text-white hover:bg-[#24555d] px-6 py-2 rounded-lg"
           >
             Go to Dashboard
           </Button>

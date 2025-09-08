@@ -5,6 +5,7 @@ import Footer from "../components/footer/footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "../TopToScroll";
+import ConvaiWidget from "../components/Chat/ConvaiWidget";
 
 
 function Layout() {
@@ -16,7 +17,7 @@ function Layout() {
         <Navbar />
         <Outlet />
         <Footer />
-       
+       <ConvaiWidget/>
       </Container>
     </>
   );

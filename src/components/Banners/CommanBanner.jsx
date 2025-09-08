@@ -4,7 +4,7 @@ import { Heading, Row } from "../ComponentsIndex";
 function CommanBanner({ heading, className = "" }) {
   return (
     <Row
-      className={`relative w-full bg-[#fff4ea] py-12 md:py-10 ${className}`}
+      className={`relative w-full  bg-gradient-to-b from-[#fff4ea] via-[#fff4ea] to-white py-12 md:py-10 ${className}`}
     >
       {/* Centered Heading */}
       <div className="flex items-center justify-center w-full">

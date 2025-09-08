@@ -35,7 +35,6 @@ const blogData = [
 const features = [
   { icon: ShieldCheck, label: "Secure Payments" },
   { icon: BadgeCheck, label: "Certified Providers" },
-  { icon: Languages, label: "English & Hindi" },
 ];
 
 const TipsGuides = () => {
@@ -81,7 +80,7 @@ const TipsGuides = () => {
               />
               <div className="p-4 flex flex-col justify-between flex-1">
                 <h3 className="text-base font-semibold mb-1">{blog.title}</h3>
-                <p className="text-sm text-gray-600 line-clamp-2">
+                <p className="text-sm text-gray-600">
                   {blog.description}
                 </p>
                 <div className="flex justify-between text-xs text-gray-500 mt-2">
@@ -95,19 +94,27 @@ const TipsGuides = () => {
       </div>
 
       {/* Features Section */}
-      <div className="flex flex-wrap justify-center gap-6 mt-12">
-        {features.map((item, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col items-center justify-center border border-[#205c64] rounded-2xl flex-1 min-w-[120px] h-28 px-6 py-4 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <item.icon className="w-8 h-8 text-[#205c64] mb-2" />
-            <p className="text-[#205c64] font-semibold text-center text-sm">
-              {item.label}
-            </p>
-          </div>
-        ))}
-      </div>
+      <div className="flex items-center justify-center mt-12">
+  {/* Left Heading */}
+
+
+  {/* Right Feature Cards (Map Design) */}
+<div className="flex flex-wrap justify-center gap-6">
+  {features.map((item, idx) => (
+    <div
+      key={idx}
+      className="flex flex-col items-center justify-center border border-[#2b5f75] rounded-2xl flex-1 h-28 px-4 py-4 shadow-sm hover:shadow-md transition-shadow"
+    >
+      <item.icon className="w-8 h-8 text-[#2b5f75] mb-2" />
+      <p className="text-[#2b5f75] font-semibold text-sm whitespace-nowrap">
+        {item.label}
+      </p>
+    </div>
+  ))}
+</div>
+
+</div>
+
     </section>
   );
 };

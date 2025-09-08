@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProviders } from "../../ReduxToolkit/Slice/Service";
 import { getAllCategories } from "../../ReduxToolkit/Slice/Category";
 import { getAllSkills } from "../../ReduxToolkit/Slice/Skill";
+import { Button, ButtonWhite } from "../../components/ComponentsIndex";
 
 const ServiceListing = () => {
   const dispatch = useDispatch();
@@ -37,75 +38,99 @@ const ServiceListing = () => {
 
       <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
         {/* Filters Sidebar (Desktop) */}
-        <div className="hidden lg:block w-1/4 bg-white shadow rounded-xl p-5 space-y-6">
-          <button className="bg-primary text-white w-full py-2 rounded-lg font-medium">
-            Filters
-          </button>
+        <div className="hidden lg:block w-1/4 p-5 ">
+          <div className="border rounded-3xl space-y-6 p-4">
+            <div className="grid">
+              <Button children={"Filters"} icon={"filter"} />
 
-          {/* Category Filter */}
-          <div>
-            <h2 className="font-semibold mb-2">Select Category</h2>
-            <select
-              className="border p-2 rounded w-full"
-              onChange={(e) => {
-                setServiceCategoryId(e.target.value);
-                setPage(1);
-              }}
-            >
-              <option value="">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
+            </div>
+            {/* Skill Filter */}
+
+            {/* Category Filter */}
+
+            <div>
+              <select
+                value={serviceCategoryId}
+                onChange={(e) => {
+                  setServiceCategoryId(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+              >
+                <option value="" className="text-primary">
+                  Select Care Type
                 </option>
-              ))}
-            </select>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <select
+                value={skillIds}
+                onChange={(e) => {
+                  setSkillIds(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+              >
+                <option value="" className="text-primary">
+                  Services
+                </option>
+                {skills.map((skill) => (
+                  <option key={skill.id} value={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
           </div>
 
-          {/* Skill Filter */}
-          <div>
-            <h2 className="font-semibold mb-2">Select Skill</h2>
-            <select
-              value={skillIds}
-              onChange={(e) => {
-                setSkillIds(e.target.value);
-                setPage(1);
-              }}
-              className="border p-2 rounded w-full"
-            >
-              <option value="">All Skills</option>
-              {skills.map((skill) => (
-                <option key={skill.id} value={skill.id}>
-                  {skill.name}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
 
         {/* Services Section */}
         <div className="w-full lg:w-3/4">
           {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+          <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            {/* Left side title */}
             <h2 className="text-lg font-semibold">
               Result ({providers.length})
             </h2>
 
-            <div className="flex items-center gap-3 w-full md:w-auto">
+            {/* Right side controls */}
+            <div className="flex flex-col md:flex-row md:items-center gap-3 w-full md:w-auto">
               {/* Mobile Filter Button */}
               <button
                 onClick={() => setShowFilter(true)}
-                className="lg:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg mb-4 w-fit"
-                       >
-                         <FaFilter /> Filters
+                className="lg:hidden flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg w-full md:w-fit h-[44px]"
+              >
+                <FaFilter /> Filters
               </button>
 
+              {/* Toggle buttons */}
+
+              <div className="flex bg-transparent rounded-full p-1 border w-full md:w-auto justify-center">
+                <button className="px-6 py-2 rounded-full font-medium bg-[#2B5F75] text-white shadow w-1/2 md:w-auto">
+                  Individual
+                </button>
+                <Link
+                  to="/company-service"
+                  className="px-6 py-2 rounded-full font-medium text-gray-600 flex items-center justify-center w-1/2 md:w-auto"
+                >
+                  Partner
+                </Link>
+              </div>
+
               {/* Search */}
-              <div className="relative flex-1 md:flex-initial">
-                <FaSearch className="absolute left-3 top-3 text-gray-400" />
+              <div className="relative w-full md:w-64">
+                <FaSearch className="absolute left-3 top-3.5 md:top-4 text-gray-400 text-sm md:text-base" />
                 <input
                   type="text"
                   placeholder="Search for Service"
-                  className="w-full pl-10 pr-4 py-2 border rounded-full focus:ring focus:ring-blue-300"
+                  className="w-full pl-9 pr-4 py-2 h-[40px] md:h-[48px] border rounded-full focus:ring focus:ring-blue-300 text-sm md:text-base"
                   value={search}
                   onChange={handleSearchChange}
                 />
@@ -121,38 +146,43 @@ const ServiceListing = () => {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            {providers.map((provider) => (
+            {providers.map((service) => (
               <div
-                key={provider.id}
-                className="border rounded-xl shadow-sm hover:shadow-md transition bg-white"
+                key={service.id}
+                className="w-full bg-white rounded-[24px] shadow-md border hover:shadow-lg transition-all duration-300"
               >
-                <div className="relative">
-                  <img
-                    src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
-                    alt={provider.name}
-                    className="w-full h-32 sm:h-40 md:h-48 object-cover rounded-t-xl"
-                  />
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-semibold text-sm sm:text-base">
-                    {provider.name}
-                  </h3>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-                    {provider.address}
-                  </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-                    {provider.mobile}
-                  </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 overflow-auto">
-                    {provider.email}
-                  </p>
+                {/* Image */}
+                <Link to={`/provider/${service.id}`}>
+                  <div className="relative">
+                    <img
+                      src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
+                      alt={service.name}
+                      className="w-full h-36 sm:h-44 md:h-52 object-cover rounded-t-[24px]"
+                    />
+                  </div>
+                </Link>
 
-                  <Link to={`/booking/${provider.id}`}>
-                    <button className="w-full mt-2 border border-primary text-primary rounded-full py-1.5 sm:py-2 text-xs sm:text-sm hover:bg-blue-50">
+                {/* Content */}
+                <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
+                  <h3 className="text-sm md:text-[20px] font-semibold text-gray-900">
+                    {service.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 pb-3">Skill</p>
+                  {" "}
+                  <Link to={`/booking/${service.id}`}>        <div className="grid">
+                    <ButtonWhite
+
+                      onClick={() => handleServiceClick(service.id)}
+                    >
                       Book Now
-                    </button>
-                  </Link>
+                    </ButtonWhite>
+
+
+                  </div></Link>
+
+
                 </div>
+
               </div>
             ))}
           </div>
@@ -200,49 +230,67 @@ const ServiceListing = () => {
               ✖
             </button>
 
-            <h2 className="font-semibold mb-4">Filters</h2>
+            <div className="border rounded-3xl space-y-6 p-4">
+              <div className="grid">
+                <Button children={"Filters"} icon={"filter"} />
+              </div>
 
-            {/* Category Filter */}
-            <div>
-              <h3 className="font-semibold mb-2">Select Category</h3>
-              <select
-                className="border p-2 rounded w-full"
-                onChange={(e) => {
-                  setServiceCategoryId(e.target.value);
-                  setPage(1);
-                }}
-              >
-                <option value="">All Categories</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
+              {/* Skill Filter */}
+              <div>
+                <select
+                  value={skillIds}
+                  onChange={(e) => {
+                    setSkillIds(e.target.value);
+                    setPage(1);
+                  }}
+                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                >
+                  <option value="" className="text-primary">
+                    Skills
                   </option>
-                ))}
-              </select>
-            </div>
+                  {skills.map((skill) => (
+                    <option key={skill.id} value={skill.id}>
+                      {skill.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            {/* Skill Filter */}
-            <div>
-              <h3 className="font-semibold mb-2">Select Skill</h3>
-              <select
-                value={skillIds}
-                onChange={(e) => {
-                  setSkillIds(e.target.value);
-                  setPage(1);
-                }}
-                className="border p-2 rounded w-full"
-              >
-                <option value="">All Skills</option>
-                {skills.map((skill) => (
-                  <option key={skill.id} value={skill.id}>
-                    {skill.name}
+              {/* Category Filter */}
+              <div>
+                <select
+                  value={serviceCategoryId}
+                  onChange={(e) => {
+                    setServiceCategoryId(e.target.value);
+                    setPage(1);
+                  }}
+                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                >
+                  <option value="" className="text-primary">
+                    Select Care Type
                   </option>
-                ))}
-              </select>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Apply Button */}
+              <div>
+                <button
+                  onClick={() => setShowFilter(false)}
+                  className="w-full h-[48px] bg-primary text-white rounded-full font-medium"
+                >
+                  Apply
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
+
     </>
   );
 };

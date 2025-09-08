@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
+import { FaSearch, FaFilter } from "react-icons/fa";
 import CommanBanner from "../../components/Banners/CommanBanner";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategories } from "../../ReduxToolkit/Slice/Category";
 import { getAllSkills } from "../../ReduxToolkit/Slice/Skill";
 import { CompanyGetAllProviders } from "../../ReduxToolkit/Slice/CompanyService";
+import { Button, ButtonWhite } from "../../components/ComponentsIndex";
 
-const CompnayServiceListing = () => {
+const CompanyServiceListing = () => {
   const dispatch = useDispatch();
   const { providers, status } = useSelector((state) => state.CompanyService);
   const { categories } = useSelector((state) => state.categories);
   const { skills } = useSelector((state) => state.skills);
-
+  console.log(providers)
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const [serviceCategoryId, setServiceCategoryId] = useState(""); // category filter
-  const [skillIds, setSkillIds] = useState(""); // skill filter
-  const [showFilters, setShowFilters] = useState(false); // ✅ Mobile filters toggle
+  const [serviceCategoryId, setServiceCategoryId] = useState("");
+  const [skillIds, setSkillIds] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -33,81 +34,59 @@ const CompnayServiceListing = () => {
     setPage(1);
   };
 
-  // ✅ Extract pagination safely
+  // ✅ Pagination + Companies safe check
   const pagination = providers?.data?.pagination || { page: 1, totalPages: 1 };
 
-  // ✅ Extract company list safely
-  const companies = Array.isArray(providers?.data?.companies)
-    ? providers.data.companies
-    : providers || [];
 
   return (
     <>
       <CommanBanner heading={"Company Services"} />
 
-      <div className="flex flex-col lg:flex-row gap-6 p-6 relative">
-        {/* Mobile Filter Button */}
-        <button
-          onClick={() => setShowFilters(true)}
-          className="lg:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg mb-4 w-fit"
-        >
-          <FaFilter /> Filters
-        </button>
+      <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
+        {/* Filters Sidebar (Desktop) */}
+        <div className="hidden lg:block w-1/4 p-5 ">
+          <div className="border rounded-3xl space-y-6 p-4">
+            <div className="grid">
+              <Button children={"Filters"} icon={"filter"} />
+            </div>
 
-        {/* Filters Sidebar (Desktop + Mobile Drawer) */}
-        <div
-          className={`fixed inset-y-0 left-0 w-3/4 max-w-sm bg-white shadow-lg z-50 transform transition-transform p-5 space-y-6 lg:static lg:translate-x-0 lg:w-1/4 rounded-xl
-          ${showFilters ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          {/* Close Button (Mobile) */}
-          <button
-            onClick={() => setShowFilters(false)}
-            className="lg:hidden absolute top-4 right-4 text-gray-600"
-          >
-            <FaTimes size={20} />
-          </button>
+            {/* Category Filter */}
+            <div>
+              <select
+                value={serviceCategoryId}
+                onChange={(e) => {
+                  setServiceCategoryId(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+              >
+                <option value="">Select Care Type</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <button className="bg-primary text-white w-full py-2 rounded-lg font-medium">
-            Filters
-          </button>
-
-          {/* Category Filter */}
-          <div>
-            <h2 className="font-semibold mb-2">Select Category</h2>
-            <select
-              className="border p-2 rounded w-full"
-              onChange={(e) => {
-                setServiceCategoryId(e.target.value);
-                setPage(1);
-              }}
-            >
-              <option value="">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Skill Filter */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Skill</label>
-            <select
-              value={skillIds}
-              onChange={(e) => {
-                setSkillIds(e.target.value);
-                setPage(1);
-              }}
-              className="w-full border rounded-lg p-2"
-            >
-              <option value="">All Skills</option>
-              {skills.map((skill) => (
-                <option key={skill.id} value={skill.id}>
-                  {skill.name}
-                </option>
-              ))}
-            </select>
+            {/* Skill Filter */}
+            <div>
+              <select
+                value={skillIds}
+                onChange={(e) => {
+                  setSkillIds(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+              >
+                <option value="">Services</option>
+                {skills.map((skill) => (
+                  <option key={skill.id} value={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -115,63 +94,92 @@ const CompnayServiceListing = () => {
         <div className="w-full lg:w-3/4">
           {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-            <h2 className="text-lg font-semibold">
-              Result ({companies.length})
+            {/* Title */}
+            <h2 className="text-lg font-semibold w-full md:w-auto">
+              Result ({providers.length})
             </h2>
-            <div className="relative w-full md:w-72">
-              <FaSearch className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search for Company"
-                className="w-full pl-10 pr-4 py-2 border rounded-full focus:ring focus:ring-blue-300"
-                value={search}
-                onChange={handleSearchChange}
-              />
+
+            {/* Controls */}
+            <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+              {/* Mobile Filter Button */}
+              <button
+                onClick={() => setShowFilter(true)}
+                className="lg:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg w-full md:w-fit justify-center"
+              >
+                <FaFilter /> Filters
+              </button>
+
+              {/* Toggle buttons */}
+              <div className="flex bg-transparent rounded-full p-1 border w-full md:w-auto justify-center">
+                <Link
+                  to="/service"
+                  className="px-6 py-2 rounded-full font-medium   text-gray-600 flex items-center justify-center w-1/2 md:w-auto"
+                >
+
+                  Individua
+                </Link>
+                <button
+                  className="px-6 py-2 rounded-full font-medium  text-white bg-[#2B5F75] shadow w-1/2 md:w-auto"
+                >
+
+                  Partner
+                </button>
+
+              </div>
+
+              {/* Search */}
+              <div className="relative w-full md:w-64">
+                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search for Company"
+                  className="w-full pl-9 pr-4 py-2 h-[40px] md:h-[48px] border rounded-full focus:ring focus:ring-blue-300 text-sm md:text-base"
+                  value={search}
+                  onChange={handleSearchChange}
+                />
+              </div>
             </div>
           </div>
 
-          {/* Loading / Error */}
+
+          {/* Loading */}
           {status === "loading" && <p>Loading companies...</p>}
           {status === "failed" && (
             <p className="text-red-500">Error fetching companies</p>
           )}
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {companies.map((company) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+            {providers.map((company) => (
               <div
                 key={company.id}
-                className="border rounded-xl shadow-sm hover:shadow-md transition bg-white"
+                className="w-full bg-white rounded-[24px] shadow-md border hover:shadow-lg transition-all duration-300"
               >
-                <div className="relative">
-                  <img
-                    src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
-                    alt={company.companyName}
-                    className="w-full h-32 sm:h-40 md:h-56 object-cover rounded-t-xl"
-                  // 👆 smaller image on phone, normal on bigger screens
-                  />
-                </div>
-                <div className="p-2 sm:p-3 md:p-4">
-                  <h3 className="font-semibold text-xs sm:text-sm md:text-base">
+                <Link to={`/compnay-provider/${company.id}`}>
+                  <div className="relative">
+                    <img
+                      src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
+                      alt={company.companyName}
+                      className="w-full h-36 sm:h-44 md:h-52 object-cover rounded-t-[24px]"
+                    />
+                  </div>
+                </Link>
+
+                <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
+                  <h3 className="text-sm md:text-[20px] font-semibold text-gray-900">
                     {company.companyName}
                   </h3>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-                    {company.address}
-                  </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-                    {company.mobile}
-                  </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-                    {company.email}
-                  </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-600 pb-3">{"Skill"}</p>
+                  {/* <p className="text-xs sm:text-sm text-gray-600">{company.mobile}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">{company.email}</p> */}
+                  {/* <p className="text-xs sm:text-sm text-gray-600 pb-3">
                     Pincode: {company.pincode}
-                  </p>
+                  </p> */}
 
                   <Link to={`/company-service-booking/${company.id}`}>
-                    <button className="w-full mt-2 border border-primary text-primary rounded-full py-1 text-xs sm:text-sm md:text-base hover:bg-blue-50">
-                      Book Now
-                    </button>
+                    <div className="grid">
+                      <ButtonWhite>Book Now</ButtonWhite>
+                    </div>
                   </Link>
                 </div>
               </div>
@@ -191,7 +199,9 @@ const CompnayServiceListing = () => {
               {pagination.page} / {pagination.totalPages}
             </span>
             <button
-              onClick={() => setPage((prev) => Math.min(prev + 1, pagination.totalPages))}
+              onClick={() =>
+                setPage((prev) => Math.min(prev + 1, pagination.totalPages))
+              }
               disabled={page === pagination.totalPages}
               className="px-3 py-1 border rounded disabled:opacity-50"
             >
@@ -200,8 +210,82 @@ const CompnayServiceListing = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Filter Drawer */}
+      {showFilter && (
+        <div className="fixed inset-0 z-50 flex">
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50"
+            onClick={() => setShowFilter(false)}
+          ></div>
+
+          {/* Drawer */}
+          <div className="relative bg-white w-72 max-w-xs h-full shadow-lg p-5 space-y-6 flex flex-col">
+            <button
+              onClick={() => setShowFilter(false)}
+              className="absolute top-3 right-3 text-gray-600"
+            >
+              ✖
+            </button>
+
+            <div className="border rounded-3xl space-y-6 p-4 flex-1">
+              <div className="grid">
+                <Button children={"Filters"} icon={"filter"} />
+              </div>
+
+              {/* Skill Filter */}
+              <div>
+                <select
+                  value={skillIds}
+                  onChange={(e) => {
+                    setSkillIds(e.target.value);
+                    setPage(1);
+                  }}
+                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                >
+                  <option value="">All Skills</option>
+                  {skills.map((skill) => (
+                    <option key={skill.id} value={skill.id}>
+                      {skill.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Category Filter */}
+              <div>
+                <select
+                  value={serviceCategoryId}
+                  onChange={(e) => {
+                    setServiceCategoryId(e.target.value);
+                    setPage(1);
+                  }}
+                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* ✅ Apply Button */}
+            <button
+              onClick={() => setShowFilter(false)}
+              className="w-full bg-primary text-white py-2 rounded-full font-medium mt-auto"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      )}
+
     </>
   );
 };
 
-export default CompnayServiceListing;
+export default CompanyServiceListing;

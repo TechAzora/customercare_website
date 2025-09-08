@@ -78,7 +78,7 @@ const Login = () => {
           navigate('/update_profile');
         } else {
           navigate('/profile');
-         window.location.reload(false)
+          window.location.reload(false)
         }
       }
     } catch (err) {
@@ -98,11 +98,11 @@ const Login = () => {
       ></div>
 
       {/* Right Form */}
-      <div className="md:w-1/2 w-full  bg-[#2d6a74] flex items-center justify-center p-4">
+      <div className="md:w-1/2 w-full  bg-[#2B5F75] flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md">
-        <div className="flex justify-center items-center">
-  <img src={logo} alt="Logo" className="h-12 w-auto" />
-</div>
+          <div className="flex justify-center items-center py-5">
+            <img src={logo} alt="Logo" className="h-12 w-auto" />
+          </div>
 
           <h2 className="text-2xl font-bold mb-6">Sign In</h2>
 
@@ -116,16 +116,15 @@ const Login = () => {
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 placeholder="+91"
-                className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4"
+                className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-5"
               />
               <button
                 onClick={handleSendOTP}
                 disabled={loading}
-                className={`w-full py-3 rounded-full shadow-md text-white ${
-                  loading
+                className={`w-full py-3 rounded-full shadow-md text-white ${loading
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-[#2d6a74] hover:bg-[#24555d]'
-                }`}
+                    : 'bg-[#2B5F75] hover:bg-[#24555d]'
+                  }`}
               >
                 {loading ? 'Sending...' : 'Get OTP'}
               </button>
@@ -148,7 +147,7 @@ const Login = () => {
                     value={digit}
                     onChange={(e) => handleOtpChange(e.target.value, index)}
                     ref={(el) => (inputRefs.current[index] = el)}
-                    className="w-12 h-12 text-center text-xl border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-12 h-12 text-center text-xl border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 mb-5"
                   />
                 ))}
               </div>
@@ -156,16 +155,16 @@ const Login = () => {
               <button
                 onClick={handleVerifyOTP}
                 disabled={loading}
-                className={`w-full py-3 rounded-full shadow-md text-white ${
-                  loading
+                className={`w-full py-3 rounded-full shadow-md text-white ${loading
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-[#2d6a74] hover:bg-[#24555d]'
-                }`}
+                    : 'bg-[#2B5F75] hover:bg-[#24555d]'
+                  }`}
               >
                 {loading ? 'Verifying...' : 'Verify'}
               </button>
             </>
           )}
+          <p className='text-center pt-10 pb-5 text-sm text-[#696969]'> Powered by Access Assist | Made in India</p>
         </div>
       </div>
 

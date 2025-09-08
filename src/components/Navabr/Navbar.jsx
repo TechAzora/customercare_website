@@ -7,7 +7,7 @@ function Navbar() {
   const menuItems = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "Service", link: "/service" },
-    { id: 2, name: "Company Service", link: "/company-service" },
+    // { id: 2, name: "Company Service", link: "/company-service" },
     // { id: 3, name: "Faqs", link: "/faqs" },
   ];
 
@@ -51,8 +51,8 @@ function Navbar() {
               className={({ isActive }) =>
                 `transition-colors ${
                   isActive
-                    ? "text-[#205c64] font-medium underline underline-offset-4"
-                    : "hover:text-[#205c64]"
+                    ? "text-[#2b5f75] font-medium underline underline-offset-4"
+                    : "hover:text-[#2b5f75]"
                 }`
               }
             >
@@ -66,14 +66,14 @@ function Navbar() {
           {isLoggedIn ? (
             <Link
               to="/profile"
-              className="bg-[#205c64] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors"
+              className="bg-[#2b5f75] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors"
             >
               Profile
             </Link>
           ) : (
             <Link
               to="/login"
-              className="bg-[#205c64] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors"
+              className="bg-[#2b5f75] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors"
             >
               Sign In
             </Link>
@@ -96,7 +96,7 @@ function Navbar() {
               key={item.id}
               to={item.link}
               onClick={() => setIsOpen(false)} // close on click
-              className="block text-gray-700 hover:text-[#205c64] transition-colors"
+              className="block text-gray-700 hover:text-[#2b5f75] transition-colors"
             >
               {item.name}
             </NavLink>
@@ -106,7 +106,7 @@ function Navbar() {
             <Link
               to="/profile"
               onClick={() => setIsOpen(false)}
-              className="block bg-[#205c64] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors text-center"
+              className="block bg-[#2b5f75] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors text-center"
             >
               Profile
             </Link>
@@ -114,7 +114,7 @@ function Navbar() {
             <Link
               to="/login"
               onClick={() => setIsOpen(false)}
-              className="block bg-[#205c64] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors text-center"
+              className="block bg-[#2b5f75] text-white px-6 py-2 rounded-full shadow-md hover:bg-[#17434a] transition-colors text-center"
             >
               Sign In
             </Link>
