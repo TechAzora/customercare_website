@@ -16,7 +16,7 @@ const ServiceListing = () => {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(100);
   const [serviceCategoryId, setServiceCategoryId] = useState("");
   const [serviceId, setSkillIds] = useState("");
   const [showFilter, setShowFilter] = useState(false); // 👈 mobile filter toggle
@@ -38,16 +38,12 @@ const ServiceListing = () => {
 
       <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6">
         {/* Filters Sidebar (Desktop) */}
-        <div className="hidden lg:block w-1/4 p-5 ">
-          <div className="border rounded-3xl space-y-6 p-4">
+        <div className="hidden lg:block w-1/4 p-5">
+          <div className="border rounded-3xl space-y-6 p-4 sticky top-24">
             <div className="grid">
               <Button children={"Filters"} icon={"filter"} />
 
             </div>
-            {/* Skill Filter */}
-
-            {/* Category Filter */}
-
             <div>
               <select
                 value={serviceCategoryId}
@@ -197,11 +193,11 @@ const ServiceListing = () => {
                       </div>
                     )}
                   </div>
-                   <p className="text-xs text-gray-400 pb-5">
-                {service?.serviceCategories.map((category) => (
-                  <span key={category.id} className="border rounded-full p-1">{category.name} </span>
-                ))}
-              </p>
+                  <p className="text-xs text-gray-400 pb-5">
+                    {service?.serviceCategories.map((category) => (
+                      <span key={category.id} className="border rounded-full p-1 me-1">{category.name} </span>
+                    ))}
+                  </p>
                   {" "}
                   <Link to={`/booking/${service.id}`}>
                     <div className="grid">

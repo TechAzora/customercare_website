@@ -80,7 +80,7 @@ const ServicesSlider = () => {
               </div>
               <p className="text-xs text-gray-400 py-3">
                 {service?.serviceCategories.map((category) => (
-                  <span key={category.id} className="border rounded-full p-1">{category.name} </span>
+                  <span key={category.id} className="border rounded-full p-1 me-1">{category.name} </span>
                 ))}
               </p>
 
