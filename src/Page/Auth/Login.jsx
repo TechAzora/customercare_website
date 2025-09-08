@@ -112,8 +112,10 @@ const Login = () => {
                 Enter your phone number:
               </label>
               <input
-                type="text"
                 value={mobile}
+                type="tel"              // 👈 use tel for number keypad
+  inputMode="numeric"     // 👈 helps enforce numeric input
+  pattern="[0-9]*" 
                 onChange={(e) => setMobile(e.target.value)}
                 placeholder="+91"
                 className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 mb-5"
@@ -142,7 +144,9 @@ const Login = () => {
                 {otp.map((digit, index) => (
                   <input
                     key={index}
-                    type="text"
+                  type="tel"              // 👈 use tel for number keypad
+  inputMode="numeric"     // 👈 helps enforce numeric input
+  pattern="[0-9]*" 
                     maxLength={1}
                     value={digit}
                     onChange={(e) => handleOtpChange(e.target.value, index)}

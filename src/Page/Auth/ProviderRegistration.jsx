@@ -199,8 +199,10 @@ const ProviderRegistration = () => {
                   Enter your phone number:
                 </label>
                 <input
-                  type="text"
                   value={mobile}
+                  type="tel"              // 👈 use tel for number keypad
+  inputMode="numeric"     // 👈 helps enforce numeric input
+  pattern="[0-9]*" 
                   onChange={(e) => setMobile(e.target.value)}
                   placeholder="+91"
                   className="w-full p-3 rounded-full border border-gray-300 mb-4"
@@ -228,15 +230,18 @@ const ProviderRegistration = () => {
 
                 <div className="flex justify-between mb-6">
                   {otp.map((digit, index) => (
-                    <input
-                      key={index}
-                      type="text"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleOtpChange(e.target.value, index)}
-                      ref={(el) => (inputRefs.current[index] = el)}
-                      className="w-12 h-12 text-center text-xl border rounded-full"
-                    />
+                   <input
+  key={index}
+  type="tel"              // 👈 use tel for number keypad
+  inputMode="numeric"     // 👈 helps enforce numeric input
+  pattern="[0-9]*"        // 👈 ensures only digits
+  maxLength={1}
+  value={digit}
+  onChange={(e) => handleOtpChange(e.target.value, index)}
+  ref={(el) => (inputRefs.current[index] = el)}
+  className="w-12 h-12 text-center text-xl border rounded-full"
+/>
+
                   ))}
                 </div>
 

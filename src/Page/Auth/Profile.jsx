@@ -165,12 +165,12 @@ const Profile = () => {
       {/* Header */}
       <div className="bg-[#2B5F75] text-white flex justify-between items-center px-4 py-3 md:px-6 md:py-4 shadow">
         <h1 className="text-lg md:text-xl font-bold">My Profile</h1>
-        <Button
+        <button
           onClick={handleLogout}
           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-2xl text-sm md:text-base"
         >
           Logout
-        </Button>
+        </button>
       </div>
 
       {/* Content */}
