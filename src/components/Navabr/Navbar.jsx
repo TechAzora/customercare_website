@@ -7,8 +7,6 @@ function Navbar() {
   const menuItems = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "Service", link: "/service" },
-    // { id: 2, name: "Company Service", link: "/company-service" },
-    // { id: 3, name: "Faqs", link: "/faqs" },
   ];
 
   const isLoggedIn = !!localStorage.getItem("accessToken"); // ✅ check token
@@ -17,13 +15,8 @@ function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
+      setIsSticky(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -34,16 +27,16 @@ function Navbar() {
         isSticky ? "fixed top-0 bg-[#fff4ea] shadow-sm" : "relative bg-[#fff4ea]"
       }`}
     >
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <div className="max-w-7xl mx-auto flex justify-between items-center relative">
         {/* Left Logo */}
         <div className="flex-shrink-0">
           <Link to="/">
-            <img src={logo} alt="Logo" className="h-12 w-auto" />
+            <img src={logo} alt="Logo" className="h-12 md:w-auto w-72`" />
           </Link>
         </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex flex-1 justify-center space-x-8 text-gray-700">
+        {/* Center Menu */}
+        <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-8 text-gray-700">
           {menuItems.map((item) => (
             <NavLink
               key={item.id}
@@ -61,7 +54,7 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Desktop Right Button */}
+        {/* Right Button */}
         <div className="hidden md:flex flex-shrink-0">
           {isLoggedIn ? (
             <Link
