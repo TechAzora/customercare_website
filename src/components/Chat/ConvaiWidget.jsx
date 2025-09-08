@@ -62,7 +62,8 @@ const ConvaiWidget = () => {
   }, []);
 const dynamicVars = {
   "user_name": profile?.name,
-  "account_type": profile?.id
+  "auth_token": token,
+  "family_id":family
 };
   return (
  <>
