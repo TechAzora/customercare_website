@@ -71,7 +71,6 @@ const dynamicVars = {
       <elevenlabs-convai
         agent-id="agent_9101k4fbjc3sfp7rhws1m5tgyv0q"
         dynamic-variables={dynamicVars}
-        override-language="en"
       ></elevenlabs-convai>
     )}
   </>

@@ -166,7 +166,7 @@ const CompanyServiceListing = () => {
                 </Link>
 
                 <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
-                  <div className="md:flex justify-between items-center">
+                  <div className="md:flex justify-between items-center mb-3">
                     {/* Left Heading */}
                     <h3 className="text-sm  md:text-lg font-semibold text-gray-900">
                       <span title={company.companyName}> {company.companyName.slice(0, 12)}</span>
@@ -198,7 +198,7 @@ const CompanyServiceListing = () => {
                       </div>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400 py-3">
+                  <p className="text-xs text-gray-400 pb-5">
                 {company?.serviceCategories.map((category) => (
                   <span key={category.id} className="border rounded-full p-1">{category.name} </span>
                 ))}
