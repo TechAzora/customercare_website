@@ -18,16 +18,16 @@ const CompanyServiceListing = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [serviceCategoryId, setServiceCategoryId] = useState("");
-  const [skillIds, setSkillIds] = useState("");
+  const [serviceId, setSkillIds] = useState("");
   const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     dispatch(
-      CompanyGetAllProviders({ search, page, limit, serviceCategoryId, skillIds })
+      CompanyGetAllProviders({ search, page, limit, serviceCategoryId, serviceId })
     );
     dispatch(getAllCategories());
     dispatch(getAllSkills());
-  }, [dispatch, search, page, limit, serviceCategoryId, skillIds]);
+  }, [dispatch, search, page, limit, serviceCategoryId, serviceId]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -72,7 +72,7 @@ const CompanyServiceListing = () => {
             {/* Skill Filter */}
             <div>
               <select
-                value={skillIds}
+                value={serviceId}
                 onChange={(e) => {
                   setSkillIds(e.target.value);
                   setPage(1);
@@ -143,7 +143,7 @@ const CompanyServiceListing = () => {
 
 
           {/* Loading */}
-          {status === "loading" && <p>Loading companies...</p>}
+          {status === "loading" && <p className="">Loading...</p>}
           {status === "failed" && (
             <p className="text-red-500">Error fetching companies</p>
           )}
@@ -166,10 +166,38 @@ const CompanyServiceListing = () => {
                 </Link>
 
                 <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
-                  <h3 className="text-sm md:text-[20px] font-semibold text-gray-900">
-                    {company.companyName}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 pb-3">{"Skill"}</p>
+                  <div className="md:flex justify-between items-center mb-5">
+                    {/* Left Heading */}
+                    <h3 className="text-sm  md:text-lg font-semibold text-gray-900">
+                      <span title={company.companyName}> {company.companyName.slice(0, 12)}</span>
+                    </h3>
+
+                    {/* Right Rating */}
+                    {company.avgRating ? (
+                      <div className="flex items-center gap-1 text-xs">
+                        {[...Array(5)].map((_, i) => (
+                          <i
+                            key={i}
+                            className={`bi ${i < Math.round(company.avgRating)
+                              ? "bi-star-fill text-yellow-500"
+                              : "bi-star text-gray-300"
+                              }`}
+                          ></i>
+                        ))}
+                        {/* <span className="ml-1 text-gray-600">{service.avgRating}</span> */}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-xs">
+                        {[...Array(5)].map((_, i) => (
+                          <i
+                            key={i}
+                            className={`bi bi-star text-gray-300`}
+                          ></i>
+                        ))}
+                        {/* <span className="ml-1 text-gray-600">{service.avgRating}</span> */}
+                      </div>
+                    )}
+                  </div>
                   {/* <p className="text-xs sm:text-sm text-gray-600">{company.mobile}</p>
                   <p className="text-xs sm:text-sm text-gray-600">{company.email}</p> */}
                   {/* <p className="text-xs sm:text-sm text-gray-600 pb-3">
@@ -237,7 +265,7 @@ const CompanyServiceListing = () => {
               {/* Skill Filter */}
               <div>
                 <select
-                  value={skillIds}
+                  value={serviceId}
                   onChange={(e) => {
                     setSkillIds(e.target.value);
                     setPage(1);

@@ -7,8 +7,8 @@ const ConvaiWidget = () => {
   const token = localStorage.getItem("accessToken");
 
   const [profile, setProfile] = useState(null);
+  const [family, setFamily] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(profile)
   // ✅ Fetch profile API
   const fetchProfile = async () => {
     if (!token) return;
@@ -28,6 +28,18 @@ const ConvaiWidget = () => {
       setLoading(false);
     }
   };
+  // Fetch Family Members
+  const fetchFamily = async () => {
+    try {
+      const res = await axios.get(
+        `${server}/api/v1/customer/familyMember/getFamilyMembers`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (res.data.success) setFamily(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   // ✅ Load external Convai script once
   useEffect(() => {
@@ -45,22 +57,23 @@ const ConvaiWidget = () => {
   // ✅ Call API on mount
   useEffect(() => {
     fetchProfile();
-  }, []);
+    fetchFamily();
 
+  }, []);
+  const dynamicVars = {
+    user_name: "Johnnnnnnnnn", account_type: "premium"
+  };
   return (
-  <>
-    {token && (
-      <elevenlabs-convai
-        agent-id="agent_9101k4fbjc3sfp7rhws1m5tgyv0q"
-        dynamic-variables={JSON.stringify({
-          user_name: profile?.name || "Guest",
-          auth_token: token || "token",
-        })}
-        override-language="en"
-      ></elevenlabs-convai>
-    )}
-  </>
-);
+    <>
+      {token && (
+        <elevenlabs-convai
+          agent-id="agent_9101k4fbjc3sfp7rhws1m5tgyv0q"
+          dynamic-variables={dynamicVars}
+        ></elevenlabs-convai>
+      )}
+    </>
+
+  );
 
 }
 export default ConvaiWidget;

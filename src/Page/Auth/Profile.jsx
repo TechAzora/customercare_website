@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button } from "../../components/ComponentsIndex";
 import { Link, useNavigate } from "react-router-dom";
 import { User, MapPin, Edit2, Plus, Trash2, Calendar } from "lucide-react";
-import { useDispatch } from "react-redux";
 
 const Profile = () => {
   const server = "https://api.vittasarthi.com";
@@ -39,7 +37,7 @@ const Profile = () => {
       if (res.data.success) setProfile(res.data.data);
     } catch (err) {
       console.error(err);
-      toast.error("Error fetching profile");
+      console.error("Error fetching profile");
     } finally {
       setLoading(false);
     }
@@ -68,7 +66,7 @@ const Profile = () => {
       if (res.data.success) setBookings(res.data.data);
     } catch (err) {
       console.error(err);
-      toast.error("Error fetching bookings");
+      console.error("Error fetching bookings");
     }
   };
 
@@ -182,11 +180,15 @@ const Profile = () => {
             alt="Profile"
             className="w-24 h-24 md:w-40 md:h-40 object-cover rounded-3xl mb-3 md:mb-4 border-2 md:border-4 border-gray-200"
           />
-          <Link to="/update_profile">
-            <button className="flex items-center gap-1 md:gap-2 text-[#2B5F75] font-medium text-sm md:text-base mb-4">
-              <Edit2 size={16} className="md:w-5 md:h-5" /> Edit Profile
-            </button>
-          </Link>
+         <Link 
+  to="/update_profile" 
+  state={{ profile }}
+>
+  <button className="flex items-center gap-1 md:gap-2 text-[#2B5F75] font-medium text-sm md:text-base mb-4">
+    <Edit2 size={16} className="md:w-5 md:h-5" /> Edit Profile
+  </button>
+</Link>
+
  <hr />
           <button
             onClick={() => openModal()}

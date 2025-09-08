@@ -1,57 +1,66 @@
-import React , { useState } from "react";
+import React , { useState,useEffect } from "react";
 
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import CommanBanner from "../../components/Banners/CommanBanner";
 
 const UpdateProfile = () => {
   const server = "https://api.vittasarthi.com";
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Pre-filled data (you can fetch this from API if needed)
+  // Get profile from state (passed from Link)
+  const profile = location.state?.profile;
+ console.log(profile)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     gender: "",
     dob: "",
     address: "",
-    
-    // countryId: "",
-    // stateId: "",
     pincode: "",
   });
 
+ useEffect(() => {
+  if (profile) {
+    setFormData({
+      name: profile.name || "",
+      email: profile.email || "",
+      gender: profile.gender || "",
+      dob: profile.dob ? profile.dob.split("T")[0] : "", 
+      address: profile.address || "",
+      pincode: profile.pincode || "",
+    });
+  }
+}, [profile]);
+
+
   const [loading, setLoading] = useState(false);
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-const token = localStorage.getItem("accessToken"); 
-console.log(token)
-  // Handle form submit
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
+
     try {
-      const token = localStorage.getItem("accessToken"); // get token from login
+      const token = localStorage.getItem("accessToken");
       const res = await axios.put(
         `${server}/api/v1/customer/auth/completeCustomerProfile`,
         formData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       if (res.data.success) {
         toast.success("Profile updated successfully 🎉");
-          navigate('/profile');
+        navigate("/profile");
       } else {
         toast.error(res.data.message || "Failed to update profile");
       }
@@ -106,14 +115,15 @@ console.log(token)
             <option value="Female">Female</option>
           </select>
 
-          <input
-          required
-            type="date"
-            name="dob"
-            value={formData.dob}
-            onChange={handleChange}
-            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
-          />
+        <input
+  required
+  type="date"
+  name="dob"
+  value={formData.dob}
+  onChange={handleChange}
+  className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
+/>
+
 
           <input
           required

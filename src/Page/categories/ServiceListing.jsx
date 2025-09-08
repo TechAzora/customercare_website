@@ -18,14 +18,14 @@ const ServiceListing = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [serviceCategoryId, setServiceCategoryId] = useState("");
-  const [skillIds, setSkillIds] = useState("");
+  const [serviceId, setSkillIds] = useState("");
   const [showFilter, setShowFilter] = useState(false); // 👈 mobile filter toggle
 
   useEffect(() => {
-    dispatch(getAllProviders({ search, page, limit, serviceCategoryId, skillIds }));
+    dispatch(getAllProviders({ search, page, limit, serviceCategoryId, serviceId }));
     dispatch(getAllCategories());
     dispatch(getAllSkills());
-  }, [dispatch, search, page, limit, serviceCategoryId, skillIds]);
+  }, [dispatch, search, page, limit, serviceCategoryId, serviceId]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -69,7 +69,7 @@ const ServiceListing = () => {
             </div>
             <div>
               <select
-                value={skillIds}
+                value={serviceId}
                 onChange={(e) => {
                   setSkillIds(e.target.value);
                   setPage(1);
@@ -139,7 +139,7 @@ const ServiceListing = () => {
           </div>
 
           {/* Loading */}
-          {status === "loading" && <p>Loading providers...</p>}
+          {status === "loading" && <p className="">Loading...</p>}
           {status === "failed" && (
             <p className="text-red-500">Error fetching providers</p>
           )}
@@ -164,21 +164,51 @@ const ServiceListing = () => {
 
                 {/* Content */}
                 <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
-                  <h3 className="text-sm md:text-[20px] font-semibold text-gray-900">
-                    {service.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 pb-3">Skill</p>
+                  <div className="md:flex justify-between items-center mb-5">
+                    {/* Left Heading */}
+
+                    <h3 className="text-sm  md:text-lg font-semibold text-gray-900">
+                      <span title={service.name}> {service.name.slice(0, 15)}</span>
+                    </h3>
+
+                    {/* Right Rating */}
+                    {service.avgRating ? (
+                      <div className="flex items-center gap-1 text-xs">
+                        {[...Array(5)].map((_, i) => (
+                          <i
+                            key={i}
+                            className={`bi ${i < Math.round(service.avgRating)
+                              ? "bi-star-fill text-yellow-500"
+                              : "bi-star text-gray-300"
+                              }`}
+                          ></i>
+                        ))}
+                        {/* <span className="ml-1 text-gray-600">{service.avgRating}</span> */}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-xs">
+                        {[...Array(5)].map((_, i) => (
+                          <i
+                            key={i}
+                            className={`bi bi-star text-gray-300`}
+                          ></i>
+                        ))}
+                        {/* <span className="ml-1 text-gray-600">{service.avgRating}</span> */}
+                      </div>
+                    )}
+                  </div>
                   {" "}
-                  <Link to={`/booking/${service.id}`}>        <div className="grid">
-                    <ButtonWhite
+                  <Link to={`/booking/${service.id}`}>
+                    <div className="grid">
+                      <ButtonWhite
 
-                      onClick={() => handleServiceClick(service.id)}
-                    >
-                      Book Now
-                    </ButtonWhite>
+                        onClick={() => handleServiceClick(service.id)}
+                      >
+                        Book Now
+                      </ButtonWhite>
 
 
-                  </div></Link>
+                    </div></Link>
 
 
                 </div>
@@ -238,7 +268,7 @@ const ServiceListing = () => {
               {/* Skill Filter */}
               <div>
                 <select
-                  value={skillIds}
+                  value={serviceId}
                   onChange={(e) => {
                     setSkillIds(e.target.value);
                     setPage(1);

@@ -31,7 +31,7 @@ function Navbar() {
         {/* Left Logo */}
         <div className="flex-shrink-0">
           <Link to="/">
-            <img src={logo} alt="Logo" className="h-12 md:w-auto w-72`" />
+            <img src={logo} alt="Logo" className="h-12 md:w-auto w-64" />
           </Link>
         </div>
 

@@ -46,10 +46,39 @@ const ServicesSlider = () => {
 
             {/* Content */}
             <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
-              <h3 className="text-sm md:text-[20px] font-semibold text-gray-900">
-                {service.name}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600">Skill</p>
+              <div className="md:flex justify-between items-center mb-5">
+                {/* Left Heading */}
+                <h3 className="text-sm  md:text-lg font-semibold text-gray-900">
+                 <span title={service.name}> {service.name.slice(0,15)}</span>
+                </h3>
+
+                {/* Right Rating */}
+                {service.avgRating ? (
+                  <div className="flex items-center gap-1 text-xs">
+                    {[...Array(5)].map((_, i) => (
+                      <i
+                        key={i}
+                        className={`bi ${i < Math.round(service.avgRating)
+                            ? "bi-star-fill text-yellow-500"
+                            : "bi-star text-gray-300"
+                          }`}
+                      ></i>
+                    ))}
+                    {/* <span className="ml-1 text-gray-600">{service.avgRating}</span> */}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 text-xs">
+                    {[...Array(5)].map((_, i) => (
+                      <i
+                        key={i}
+                        className={`bi bi-star text-gray-300`}
+                      ></i>
+                    ))}
+                    {/* <span className="ml-1 text-gray-600">{service.avgRating}</span> */}
+                  </div>
+                )}
+              </div>
+
               <div className="grid">
                 <Button
 

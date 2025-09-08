@@ -24,14 +24,14 @@ export const getAllCompanyServices = createAsyncThunk(
 export const CompanyGetAllProviders = createAsyncThunk(
   "providers/CompanyGetAllProviders",
   async (
-    { search = "", page = 1, limit = 10, serviceCategoryId = "",},
+    { search = "", page = 1, limit = 10, serviceCategoryId = "",serviceId=""},
     { rejectWithValue }
   ) => {
     try {
       const response = await axios.get(
         getCompanyServiceApi,
         {
-          params: { search, page, limit, serviceCategoryId },
+          params: { search, page, limit, serviceCategoryId ,serviceId},
           headers: {
             Authorization: `Bearer ${token}`,
           },
