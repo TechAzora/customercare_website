@@ -222,10 +222,10 @@ const handleBooking = async () => {
 
     // Step 1: Create Razorpay order
     const orderRes = await axios.post(
-      "https://stayvilmaris-backend.vercel.app/api/v1/stayvilmaris/payment/createRazorpay",
+      `${server}/api/v1/customer/booking/createRazorpayOrder`,
       {
         amount: total * 100, // paisa
-        currency: "INR",
+        // currency: "INR",
       }
     );
 
