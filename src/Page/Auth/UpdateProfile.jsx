@@ -69,7 +69,7 @@ console.log(token)
    
     <div className="flex justify-center items-center  bg-gray-100 p-4">
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
-        <h2 className="text-xl font-bold mb-6 text-center text-[#2B5F75]">
+        <h2 className="text-xl font-bold mb-6 text-center text-[#2d6a74]">
          Update Details
         </h2>
 
@@ -81,9 +81,9 @@ console.log(token)
             onChange={handleChange}
             placeholder="Full Name"
             required
-            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500"
+            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
           />
-
+{/*  */}
           <input
             type="email"
             name="email"
@@ -91,7 +91,7 @@ console.log(token)
             onChange={handleChange}
             placeholder="Email"
             required
-            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500"
+            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
           />
 
           <select
@@ -99,7 +99,7 @@ console.log(token)
             value={formData.gender}
             onChange={handleChange}
             required
-            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500"
+            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
           >
             <option value="defalut">Select Gender</option>
             <option value="Male">Male</option>
@@ -112,7 +112,7 @@ console.log(token)
             name="dob"
             value={formData.dob}
             onChange={handleChange}
-            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500"
+            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
           />
 
           <input
@@ -149,7 +149,7 @@ console.log(token)
             value={formData.pincode}
             onChange={handleChange}
             placeholder="Pincode"
-            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500"
+            className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-500 col-span-2"
           />
 
           <button
@@ -158,7 +158,7 @@ console.log(token)
             className={`col-span-2 py-3 rounded-full text-white font-semibold shadow-md ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-[#2B5F75] hover:bg-[#24555d]"
+                : "bg-[#2d6a74] hover:bg-[#24555d]"
             }`}
           >
             {loading ? "Updating..." : "Update Profile"}
