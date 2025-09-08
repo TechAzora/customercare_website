@@ -29,6 +29,7 @@ import ProviderRegistration from "./Page/Auth/ProviderRegistration";
 import CompanyBookingPage from "./Page/Booking/CompanyBooking";
 import CompnayServiceListing from "./Page/categories/CompanyServiceListing";
 import CompanyServiceProviderProfile from "./Page/categories/CompnayServiceProviderProfile";
+import ProviderSuccess from "./Page/Auth/ProviderSuccess";
 
 // Helper to check token
 const isAuthenticated = () => {
@@ -102,7 +103,7 @@ const router = createBrowserRouter(
       <Route path="privacy-policy" element={<PrivacyPolicy />} />
       <Route path="terms-&-condition" element={<TermsConditions />} />
       <Route path="cancellation-&-refunds" element={<RefundCancellationPolicy />} />
-      <Route path="faq" element={<Faq />} />
+      <Route path="ProviderSuccess" element={<ProviderSuccess />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )

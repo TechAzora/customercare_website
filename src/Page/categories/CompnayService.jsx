@@ -52,16 +52,16 @@ const CompanyServiceHome = () => {
                 {company.companyName}
               </h3>
               <p className="text-xs sm:text-sm text-gray-600">
-                📍 {company.address}
+                {company.address}
               </p>
               <p className="text-xs sm:text-sm text-gray-600">
                 Pincode: {company.pincode}
               </p>
               <p className="text-xs sm:text-sm text-gray-600">
-                📞 {company.mobile}
+                {company.mobile}
               </p>
               <p className="text-xs sm:text-sm text-gray-600">
-                ✉️ {company.email}
+                {company.email}
               </p>
 
               <button

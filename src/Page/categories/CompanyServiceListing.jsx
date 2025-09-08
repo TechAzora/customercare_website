@@ -43,7 +43,7 @@ const CompnayServiceListing = () => {
 
   return (
     <>
-      <CommanBanner heading={"Services"} />
+      <CommanBanner heading={"Company Services"} />
 
       <div className="flex flex-col lg:flex-row gap-6 p-6 relative">
         {/* Mobile Filter Button */}
@@ -137,46 +137,46 @@ const CompnayServiceListing = () => {
           )}
 
           {/* Cards Grid */}
-         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-  {companies.map((company) => (
-    <div
-      key={company.id}
-      className="border rounded-xl shadow-sm hover:shadow-md transition bg-white"
-    >
-      <div className="relative">
-        <img
-          src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
-          alt={company.companyName}
-          className="w-full h-32 sm:h-40 md:h-56 object-cover rounded-t-xl" 
-          // 👆 smaller image on phone, normal on bigger screens
-        />
-      </div>
-      <div className="p-2 sm:p-3 md:p-4">
-        <h3 className="font-semibold text-xs sm:text-sm md:text-base">
-          {company.companyName}
-        </h3>
-        <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-          📍 {company.address}
-        </p>
-        <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-          📞 {company.mobile}
-        </p>
-        <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-          ✉️ {company.email}
-        </p>
-        <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-          Pincode: {company.pincode}
-        </p>
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {companies.map((company) => (
+              <div
+                key={company.id}
+                className="border rounded-xl shadow-sm hover:shadow-md transition bg-white"
+              >
+                <div className="relative">
+                  <img
+                    src="https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
+                    alt={company.companyName}
+                    className="w-full h-32 sm:h-40 md:h-56 object-cover rounded-t-xl"
+                  // 👆 smaller image on phone, normal on bigger screens
+                  />
+                </div>
+                <div className="p-2 sm:p-3 md:p-4">
+                  <h3 className="font-semibold text-xs sm:text-sm md:text-base">
+                    {company.companyName}
+                  </h3>
+                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
+                    {company.address}
+                  </p>
+                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
+                    {company.mobile}
+                  </p>
+                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
+                    {company.email}
+                  </p>
+                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600">
+                    Pincode: {company.pincode}
+                  </p>
 
-        <Link to={`/company-service-booking/${company.id}`}>
-          <button className="w-full mt-2 border border-primary text-primary rounded-full py-1 text-xs sm:text-sm md:text-base hover:bg-blue-50">
-            Book Now
-          </button>
-        </Link>
-      </div>
-    </div>
-  ))}
-</div>
+                  <Link to={`/company-service-booking/${company.id}`}>
+                    <button className="w-full mt-2 border border-primary text-primary rounded-full py-1 text-xs sm:text-sm md:text-base hover:bg-blue-50">
+                      Book Now
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {/* Pagination */}
           <div className="flex justify-center mt-6 gap-2">

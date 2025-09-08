@@ -33,17 +33,34 @@ const ProviderRegistration = () => {
   }, [dispatch]);
   console.log(skills)
   // Profile form state
-  const [profileData, setProfileData] = useState({
-    name: '',
-    skills: '',
-    email: '',
-    gender: '',
-    dob: '',
-    address: '',
-    pincode: '',
-    govtID: null,
-    certification: null
+// Add to initial profileData state
+const [profileData, setProfileData] = useState({
+  name: '',
+  skills: '',
+  email: '',
+  gender: '',
+  dob: '',
+  address: '',
+  pincode: '',
+  govtID: null,
+  certification: null,
+  skillVerification: '',   // ✅ New field
+  language: []             // ✅ New field
+});
+
+// Handle language change
+const handleLanguageChange = (lang) => {
+  setProfileData((prev) => {
+    const alreadySelected = prev.language.includes(lang);
+    return {
+      ...prev,
+      language: alreadySelected
+        ? prev.language.filter((l) => l !== lang) // remove if already selected
+        : [...prev.language, lang]                // add if not selected
+    };
   });
+};
+
 
   const handleSendOTP = async () => {
     if (!mobile) {
@@ -145,7 +162,9 @@ const ProviderRegistration = () => {
       formData.append('dob', profileData.dob);
       formData.append('address', profileData.address);
       formData.append('pincode', profileData.pincode);
-      
+      formData.append('skillVerification', profileData.skillVerification);
+formData.append('language', JSON.stringify(profileData.language)); 
+
       if (profileData.govtID) {
         formData.append('govtID', profileData.govtID);
       }
@@ -169,7 +188,7 @@ const ProviderRegistration = () => {
         
         toast.success('Profile completed successfully!');
         setShowProfileModal(false);
-        // navigate('/profile');
+        navigate('/ProviderSuccess');
       }
     } catch (err) {
       console.error(err);
@@ -193,7 +212,9 @@ const ProviderRegistration = () => {
           <div className="flex justify-center items-center">
             <img src={logo} alt="Logo" className="h-12 w-auto" />
           </div>
-
+<h3 className="font-bold text-center py-4">
+  Provider Registration
+</h3>
           <h2 className="text-2xl font-bold mb-6">Sign In</h2>
 
           {step === 1 ? (
@@ -368,6 +389,47 @@ const ProviderRegistration = () => {
                     placeholder="Enter your full address"
                   />
                 </div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {/* Skill Verification */}
+  <div>
+    <label className="block text-sm font-medium mb-1">Verification *</label>
+    <select
+      required
+      value={profileData.skillVerification}
+      onChange={(e) =>
+        setProfileData({ ...profileData, skillVerification: e.target.value })
+      }
+      className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+    >
+      <option value="">Select Verification</option>
+      <option value="Self-declared">Self-declared</option>
+      <option value="Verified">Verified</option>
+      <option value="Certified">Certified</option>
+    </select>
+  </div>
+
+  {/* Languages */}
+  <div>
+    <label className="block text-sm font-medium mb-1">Languages *</label>
+    <div className="grid grid-cols-2 gap-2 text-sm">
+      {[
+        "Hindi","English","Marathi","Bengali",
+        "Tamil","Telugu","Kannada","Malayalam",
+        "Gujarati","Punjabi","Odia","Assamese","Urdu"
+      ].map((lang) => (
+        <label key={lang} className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            value={lang}
+            checked={profileData.language.includes(lang)}
+            onChange={() => handleLanguageChange(lang)}
+          />
+          {lang}
+        </label>
+      ))}
+    </div>
+  </div>
+</div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Government ID */}

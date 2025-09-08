@@ -50,11 +50,11 @@ const ServicesSlider = () => {
                 {service.name}
               </h3>
               <p className="text-xs sm:text-sm text-gray-600">{service.gender}</p>
-              <p className="text-xs sm:text-sm text-gray-600">📍 {service.address}</p>
+              <p className="text-xs sm:text-sm text-gray-600">{service.address}</p>
               <p className="text-xs sm:text-sm text-gray-600">
                 Pincode: {service.pincode}
               </p>
-              <p className="text-xs sm:text-sm text-gray-600">📞 {service.mobile}</p>
+              <p className="text-xs sm:text-sm text-gray-600">{service.mobile}</p>
 
               <button
                 onClick={() => handleServiceClick(service.id)}

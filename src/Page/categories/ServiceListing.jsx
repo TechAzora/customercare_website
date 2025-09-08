@@ -94,9 +94,9 @@ const ServiceListing = () => {
               {/* Mobile Filter Button */}
               <button
                 onClick={() => setShowFilter(true)}
-                className="lg:hidden flex items-center gap-2 px-4 py-2 border rounded-lg text-sm bg-gray-100"
-              >
-                <FaFilter /> Filters
+                className="lg:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg mb-4 w-fit"
+                       >
+                         <FaFilter /> Filters
               </button>
 
               {/* Search */}

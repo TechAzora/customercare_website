@@ -47,9 +47,9 @@ const TipsGuides = () => {
       </h2>
 
       {/* Grid Layout */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-6 md:h-[400px]">
         {/* Big Left Card */}
-        <div className="col-span-1 row-span-2 shadow-lg overflow-hidden rounded-2xl">
+        <div className="shadow-lg overflow-hidden rounded-2xl h-full">
           <img
             src={blogData[0].image}
             alt={blogData[0].title}
@@ -67,8 +67,8 @@ const TipsGuides = () => {
           </div>
         </div>
 
-        {/* Right Small Cards */}
-        <div className="flex flex-col gap-6">
+        {/* Right Small Cards - same height as left */}
+        <div className="grid grid-rows-2 gap-6 h-full">
           {blogData.slice(1).map((blog) => (
             <div
               key={blog.id}
@@ -77,9 +77,9 @@ const TipsGuides = () => {
               <img
                 src={blog.image}
                 alt={blog.title}
-                className="w-32 h-full object-cover"
+                className="md:w-40 w-32 object-cover"
               />
-              <div className="p-4 flex flex-col justify-between">
+              <div className="p-4 flex flex-col justify-between flex-1">
                 <h3 className="text-base font-semibold mb-1">{blog.title}</h3>
                 <p className="text-sm text-gray-600 line-clamp-2">
                   {blog.description}
@@ -99,10 +99,12 @@ const TipsGuides = () => {
         {features.map((item, idx) => (
           <div
             key={idx}
-            className="flex flex-col items-center justify-center border border-[#205c64] rounded-2xl px-10 py-6 shadow-sm hover:shadow-md transition-shadow"
+            className="flex flex-col items-center justify-center border border-[#205c64] rounded-2xl flex-1 min-w-[120px] h-28 px-6 py-4 shadow-sm hover:shadow-md transition-shadow"
           >
-            <item.icon className="w-8 h-8 text-[#205c64] mb-3" />
-            <p className="text-[#205c64] font-semibold">{item.label}</p>
+            <item.icon className="w-8 h-8 text-[#205c64] mb-2" />
+            <p className="text-[#205c64] font-semibold text-center text-sm">
+              {item.label}
+            </p>
           </div>
         ))}
       </div>

@@ -8,7 +8,7 @@ function CommanBanner({ heading, className = "" }) {
     >
       {/* Centered Heading */}
       <div className="flex items-center justify-center w-full">
-        <Heading className="text-xl md:text-2xl lg:text-4xl font-semibold text-center px-4 text-black">
+        <Heading className="text-xl md:text-2xl lg:text-3xl font-semibold text-center px-4 text-black">
           {heading}
         </Heading>
       </div>
