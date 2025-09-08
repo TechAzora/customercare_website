@@ -49,7 +49,7 @@ const CompanyServiceHome = () => {
             {/* Content */}
             <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
               
-                <div className="md:flex justify-between items-center mb-5">
+                <div className="md:flex justify-between items-center">
                 {/* Left Heading */}
                 <h3 className="text-sm  md:text-lg font-semibold text-gray-900">
                  <span title={company.companyName}> {company.companyName.slice(0,15)}</span>
@@ -81,15 +81,11 @@ const CompanyServiceHome = () => {
                   </div>
                 )}
               </div>
-              {/* <p className="text-xs sm:text-sm text-gray-600">
-                Pincode: {company.pincode}
+                  <p className="text-xs text-gray-400 py-3">
+                {company?.serviceCategories.map((category) => (
+                  <span key={category.id} className="border rounded-full p-1">{category.name} </span>
+                ))}
               </p>
-              <p className="text-xs sm:text-sm text-gray-600">
-                {company.mobile}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-600">
-                {company.email}
-              </p> */}
               <div className="grid">
                 <Button
 

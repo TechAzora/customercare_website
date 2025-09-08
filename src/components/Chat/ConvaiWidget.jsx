@@ -7,7 +7,7 @@ const ConvaiWidget = () => {
   const token = localStorage.getItem("accessToken");
 
   const [profile, setProfile] = useState(null);
-  const [family, setFamily] = useState([]);
+    const [family, setFamily] = useState([]);
   const [loading, setLoading] = useState(false);
   // ✅ Fetch profile API
   const fetchProfile = async () => {
@@ -57,23 +57,25 @@ const ConvaiWidget = () => {
   // ✅ Call API on mount
   useEffect(() => {
     fetchProfile();
-    fetchFamily();
+        fetchFamily();
 
   }, []);
-  const dynamicVars = {
-    user_name: "Johnnnnnnnnn", account_type: "premium"
-  };
+const dynamicVars = {
+  "user_name": profile?.name,
+  "account_type": profile?.id
+};
   return (
-    <>
-      {token && (
-        <elevenlabs-convai
-          agent-id="agent_9101k4fbjc3sfp7rhws1m5tgyv0q"
-          dynamic-variables={dynamicVars}
-        ></elevenlabs-convai>
-      )}
-    </>
+ <>
+    {token && (
+      <elevenlabs-convai
+        agent-id="agent_9101k4fbjc3sfp7rhws1m5tgyv0q"
+        dynamic-variables={dynamicVars}
+        override-language="en"
+      ></elevenlabs-convai>
+    )}
+  </>
 
-  );
+);
 
 }
 export default ConvaiWidget;

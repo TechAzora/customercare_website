@@ -46,7 +46,7 @@ const ServicesSlider = () => {
 
             {/* Content */}
             <div className="p-3 sm:p-4 text-left space-y-1 sm:space-y-2">
-              <div className="md:flex justify-between items-center mb-5">
+              <div className="md:flex justify-between items-center">
                 {/* Left Heading */}
                 <h3 className="text-sm  md:text-lg font-semibold text-gray-900">
                  <span title={service.name}> {service.name.slice(0,15)}</span>
@@ -78,6 +78,11 @@ const ServicesSlider = () => {
                   </div>
                 )}
               </div>
+              <p className="text-xs text-gray-400 py-3">
+                {service?.serviceCategories.map((category) => (
+                  <span key={category.id} className="border rounded-full p-1">{category.name} </span>
+                ))}
+              </p>
 
               <div className="grid">
                 <Button
