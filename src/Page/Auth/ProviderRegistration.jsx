@@ -137,15 +137,15 @@ const ProviderRegistration = () => {
     try {
       const formData = new FormData();
       formData.append('name', profileData.name);
-      formData.append('skills', profileData.skills);
+      // formData.append('skills', profileData.skills);
       formData.append('email', profileData.email);
       formData.append('mobile', mobile);
       formData.append('gender', profileData.gender);
       formData.append('dob', profileData.dob);
       formData.append('address', profileData.address);
       formData.append('pincode', profileData.pincode);
-      formData.append('skillVerification', profileData.skillVerification);
-      formData.append('language', JSON.stringify(profileData.language));
+      // formData.append('skillVerification', profileData.skillVerification);
+      // formData.append('language', JSON.stringify(profileData.language));
 
       if (profileData.govtID) formData.append('govtID', profileData.govtID);
       if (profileData.certification)
@@ -201,8 +201,8 @@ const ProviderRegistration = () => {
                 <input
                   value={mobile}
                   type="tel"              // 👈 use tel for number keypad
-  inputMode="numeric"     // 👈 helps enforce numeric input
-  pattern="[0-9]*" 
+                  inputMode="numeric"     // 👈 helps enforce numeric input
+                  pattern="[0-9]*"
                   onChange={(e) => setMobile(e.target.value)}
                   placeholder="+91"
                   className="w-full p-3 rounded-full border border-gray-300 mb-4"
@@ -210,11 +210,10 @@ const ProviderRegistration = () => {
                 <button
                   onClick={handleSendOTP}
                   disabled={loading}
-                  className={`w-full py-3 rounded-full text-white ${
-                    loading
+                  className={`w-full py-3 rounded-full text-white ${loading
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-[#2B5F75] hover:bg-[#24555d]'
-                  }`}
+                    }`}
                 >
                   {loading ? 'Sending...' : 'Get OTP'}
                 </button>
@@ -230,17 +229,17 @@ const ProviderRegistration = () => {
 
                 <div className="flex justify-between mb-6">
                   {otp.map((digit, index) => (
-                   <input
-  key={index}
-  type="tel"              // 👈 use tel for number keypad
-  inputMode="numeric"     // 👈 helps enforce numeric input
-  pattern="[0-9]*"        // 👈 ensures only digits
-  maxLength={1}
-  value={digit}
-  onChange={(e) => handleOtpChange(e.target.value, index)}
-  ref={(el) => (inputRefs.current[index] = el)}
-  className="w-12 h-12 text-center text-xl border rounded-full"
-/>
+                    <input
+                      key={index}
+                      type="tel"              // 👈 use tel for number keypad
+                      inputMode="numeric"     // 👈 helps enforce numeric input
+                      pattern="[0-9]*"        // 👈 ensures only digits
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOtpChange(e.target.value, index)}
+                      ref={(el) => (inputRefs.current[index] = el)}
+                      className="w-12 h-12 text-center text-xl border rounded-full"
+                    />
 
                   ))}
                 </div>
@@ -248,11 +247,10 @@ const ProviderRegistration = () => {
                 <button
                   onClick={handleVerifyOTP}
                   disabled={loading}
-                  className={`w-full py-3 rounded-full text-white ${
-                    loading
+                  className={`w-full py-3 rounded-full text-white ${loading
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-[#2B5F75] hover:bg-[#24555d]'
-                  }`}
+                    }`}
                 >
                   {loading ? 'Verifying...' : 'Verify'}
                 </button>
@@ -261,217 +259,214 @@ const ProviderRegistration = () => {
           </div>
         ) : (
           // Profile Completion Stepper
-         <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6">
-  {/* Stepper */}
-  <div className="flex items-center justify-between mb-6">
-    {[1, 2, 3].map((s) => (
-      <div
-        key={s}
-        className={`flex-1 h-2 mx-1 rounded-full ${
-          profileStep >= s ? "bg-[#2B5F75]" : "bg-gray-300"
-        }`}
-      ></div>
-    ))}
-  </div>
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6">
+            {/* Stepper */}
+            <div className="flex items-center justify-between mb-6">
+              {[1, 2].map((s) => (
+                <div
+                  key={s}
+                  className={`flex-1 h-2 mx-1 rounded-full ${profileStep >= s ? "bg-[#2B5F75]" : "bg-gray-300"
+                    }`}
+                ></div>
+              ))}
+            </div>
 
-  {/* Title */}
-  <div className="text-center mb-6">
-    <h2 className="text-xl font-semibold">Complete Your Profile</h2>
-    <p className="text-gray-500">Step {profileStep} of 3</p>
-  </div>
+            {/* Title */}
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-semibold">Complete Your Profile</h2>
+              <p className="text-gray-500">Step {profileStep} of 3</p>
+            </div>
 
-  {/* Form */}
-  <form onSubmit={handleProfileSubmit} className="space-y-6">
-    {/* --- Step 1 --- */}
-    {profileStep === 1 && (
-      <div className="space-y-4">
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={profileData.name}
-          onChange={(e) =>
-            setProfileData({ ...profileData, name: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={profileData.email}
-          onChange={(e) =>
-            setProfileData({ ...profileData, email: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        />
-        <select
-          value={profileData.gender}
-          onChange={(e) =>
-            setProfileData({ ...profileData, gender: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        >
-          <option value="">Select Gender</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
-        </select>
-        <input
-          type="date"
-          value={profileData.dob}
-          onChange={(e) =>
-            setProfileData({ ...profileData, dob: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        />
-        <textarea
-          placeholder="Address"
-          value={profileData.address}
-          onChange={(e) =>
-            setProfileData({ ...profileData, address: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Pincode"
-          value={profileData.pincode}
-          onChange={(e) =>
-            setProfileData({ ...profileData, pincode: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        />
-      </div>
-    )}
+            {/* Form */}
+            <form onSubmit={handleProfileSubmit} className="space-y-6">
+              {/* --- Step 1 --- */}
+              {profileStep === 1 && (
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={profileData.name}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, name: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={profileData.email}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, email: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  />
+                  <select
+                    value={profileData.gender}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, gender: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  >
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                  <input
+                    type="date"
+                    value={profileData.dob}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, dob: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  />
+                  <textarea
+                    placeholder="Address"
+                    value={profileData.address}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, address: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Pincode"
+                    value={profileData.pincode}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, pincode: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  />
+                </div>
+              )}
 
-    {/* --- Step 2 --- */}
-    {profileStep === 2 && (
-      <div className="space-y-4">
-        <select
-          value={profileData.skills}
-          onChange={(e) =>
-            setProfileData({ ...profileData, skills: e.target.value })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        >
-          <option value="">Select Skill</option>
-          {skills.map((skill) => (
-            <option key={skill.id} value={skill.id}>
-              {skill.name}
-            </option>
-          ))}
-        </select>
+              {/* --- Step 2 --- */}
+              {/* {profileStep === 2 && (
+                <div className="space-y-4">
+                  <select
+                    value={profileData.skills}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, skills: e.target.value })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  >
+                    <option value="">Select Skill</option>
+                    {skills.map((skill) => (
+                      <option key={skill.id} value={skill.id}>
+                        {skill.name}
+                      </option>
+                    ))}
+                  </select>
 
-        <select
-          value={profileData.skillVerification}
-          onChange={(e) =>
-            setProfileData({
-              ...profileData,
-              skillVerification: e.target.value,
-            })
-          }
-          className="w-full border rounded-lg p-3"
-          required
-        >
-          <option value="">Select Verification</option>
-          <option>Self-declared</option>
-          <option>Verified</option>
-          <option>Certified</option>
-        </select>
+                  <select
+                    value={profileData.skillVerification}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        skillVerification: e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-lg p-3"
+                    required
+                  >
+                    <option value="">Select Verification</option>
+                    <option>Self-declared</option>
+                    <option>Verified</option>
+                    <option>Certified</option>
+                  </select>
 
-        <div>
-          <p className="mb-2 font-medium">Languages *</p>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              "Hindi",
-              "English",
-              "Marathi",
-              "Tamil",
-              "Bengal",
-              "Telugu",
-              "Kannada",
-              "Malayalam",
-              "Gujarati",
-              "Punjabi",
-              "Odia",
-              "Assamese",
-              "Urdu",
-            ].map((lang) => (
-              <label key={lang} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  value={lang}
-                  checked={profileData.language.includes(lang)}
-                  onChange={() => handleLanguageChange(lang)}
-                />
-                {lang}
-              </label>
-            ))}
+                  <div>
+                    <p className="mb-2 font-medium">Languages *</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        "Hindi",
+                        "English",
+                        "Marathi",
+                        "Tamil",
+                        "Bengal",
+                        "Telugu",
+                        "Kannada",
+                        "Malayalam",
+                        "Gujarati",
+                        "Punjabi",
+                        "Odia",
+                        "Assamese",
+                        "Urdu",
+                      ].map((lang) => (
+                        <label key={lang} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            value={lang}
+                            checked={profileData.language.includes(lang)}
+                            onChange={() => handleLanguageChange(lang)}
+                          />
+                          {lang}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )} */}
+
+              {/* --- Step 3 --- */}
+              {profileStep === 2 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-1 font-medium">Government ID *</label>
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      onChange={(e) => handleFileChange(e, "govtID")}
+                      className="w-full border rounded-lg p-2"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Certification *</label>
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      onChange={(e) => handleFileChange(e, "certification")}
+                      className="w-full border rounded-lg p-2"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation */}
+              <div className="flex justify-between pt-4">
+                {profileStep > 1 && (
+                  <ButtonWhite
+                    children={"Back"}
+                    type="button"
+                    onClick={() => setProfileStep(profileStep - 1)}
+                  />
+                )}
+
+                {profileStep < 2 ? (
+                  <Button
+                    children={"Next"}
+                    type="button"
+                    onClick={() => setProfileStep(profileStep + 1)}
+                  />
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={profileLoading}
+                    className="px-6 py-2 rounded-3xl bg-primary text-white "
+                  >
+                    {profileLoading ? "Submitting..." : "Complete Profile"}
+                  </button>
+                )}
+              </div>
+            </form>
           </div>
-        </div>
-      </div>
-    )}
-
-    {/* --- Step 3 --- */}
-    {profileStep === 3 && (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block mb-1 font-medium">Government ID *</label>
-          <input
-            type="file"
-            accept="image/*,.pdf"
-            onChange={(e) => handleFileChange(e, "govtID")}
-            className="w-full border rounded-lg p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">Certification *</label>
-          <input
-            type="file"
-            accept="image/*,.pdf"
-            onChange={(e) => handleFileChange(e, "certification")}
-            className="w-full border rounded-lg p-2"
-            required
-          />
-        </div>
-      </div>
-    )}
-
-    {/* Navigation */}
-    <div className="flex justify-between pt-4">
-      {profileStep > 1 && (
-        <ButtonWhite
-          children={"Back"}
-          type="button"
-          onClick={() => setProfileStep(profileStep - 1)}
-        />
-      )}
-
-      {profileStep < 3 ? (
-        <Button
-          children={"Next"}
-          type="button"
-          onClick={() => setProfileStep(profileStep + 1)}
-        />
-      ) : (
-        <button
-          type="submit"
-          disabled={profileLoading}
-          className="px-6 py-2 rounded-3xl bg-primary text-white "
-        >
-          {profileLoading ? "Submitting..." : "Complete Profile"}
-        </button>
-      )}
-    </div>
-  </form>
-</div>
 
         )}
       </div>

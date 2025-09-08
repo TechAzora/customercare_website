@@ -30,6 +30,8 @@ import CompanyBookingPage from "./Page/Booking/CompanyBooking";
 import CompnayServiceListing from "./Page/categories/CompanyServiceListing";
 import CompanyServiceProviderProfile from "./Page/categories/CompnayServiceProviderProfile";
 import ProviderSuccess from "./Page/Auth/ProviderSuccess";
+import LoginDashboard from "./Page/Auth/LoginDashboad";
+import CompanyRegistration from "./Page/Auth/CompanyRegistration";
 
 // Helper to check token
 const isAuthenticated = () => {
@@ -82,6 +84,7 @@ const router = createBrowserRouter(
       <Route path="provider/:id" element={<ServiceProviderProfile />} />
       <Route path="compnay-provider/:id" element={<CompanyServiceProviderProfile />} />
       <Route path="provider-registration" element={<ProviderRegistration />} />
+      <Route path="company-registration" element={<CompanyRegistration />} />
       <Route
         path="booking/:id"
         element={
@@ -104,6 +107,7 @@ const router = createBrowserRouter(
       <Route path="terms-&-condition" element={<TermsConditions />} />
       <Route path="cancellation-&-refunds" element={<RefundCancellationPolicy />} />
       <Route path="ProviderSuccess" element={<ProviderSuccess />} />
+      <Route path="login-dashboard" element={<LoginDashboard />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )

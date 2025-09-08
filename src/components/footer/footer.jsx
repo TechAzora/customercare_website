@@ -57,7 +57,7 @@ const Footer = () => {
     <ul className="space-y-2 text-sm">
      
        <li>
-        <Link to="/provider-registration" className="hover:underline">
+        <Link to="/login-dashboard" className="hover:underline">
            Registration
         </Link>
       </li>
