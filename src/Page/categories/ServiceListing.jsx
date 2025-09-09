@@ -71,7 +71,7 @@ const ServiceListing = () => {
                   setPage(1);
                 }}
                 className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
-                                 disabled={!serviceCategoryId} 
+                disabled={!serviceCategoryId}
 
               >
                 <option value="" className="text-primary">
@@ -271,27 +271,6 @@ const ServiceListing = () => {
               {/* Skill Filter */}
               <div>
                 <select
-                  value={serviceId}
-                  onChange={(e) => {
-                    setSkillIds(e.target.value);
-                    setPage(1);
-                  }}
-                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
-                >
-                  <option value="" className="text-primary">
-                    Skills
-                  </option>
-                  {skills.map((skill) => (
-                    <option key={skill.id} value={skill.id}>
-                      {skill.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Category Filter */}
-              <div>
-                <select
                   value={serviceCategoryId}
                   onChange={(e) => {
                     setServiceCategoryId(e.target.value);
@@ -305,6 +284,27 @@ const ServiceListing = () => {
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <select
+                  value={serviceId}
+                  onChange={(e) => {
+                    setSkillIds(e.target.value);
+                    setPage(1);
+                  }}
+                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                  disabled={!serviceCategoryId}
+
+                >
+                  <option value="" className="text-primary">
+                    Services
+                  </option>
+                  {skills.map((skill) => (
+                    <option key={skill.id} value={skill.id}>
+                      {skill.name}
                     </option>
                   ))}
                 </select>

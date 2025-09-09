@@ -263,43 +263,45 @@ const CompanyServiceListing = () => {
                 <Button children={"Filters"} icon={"filter"} />
               </div>
 
-              {/* Skill Filter */}
-              <div>
-                <select
-                  value={serviceId}
-                  onChange={(e) => {
-                    setSkillIds(e.target.value);
-                    setPage(1);
-                  }}
-                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
-                >
-                  <option value="">All Skills</option>
-                  {skills.map((skill) => (
-                    <option key={skill.id} value={skill.id}>
-                      {skill.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* Category Filter */}
-              <div>
-                <select
-                  value={serviceCategoryId}
-                  onChange={(e) => {
-                    setServiceCategoryId(e.target.value);
-                    setPage(1);
-                  }}
-                  className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
-                >
-                  <option value="">All Categories</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div>
+              <select
+                value={serviceCategoryId}
+                onChange={(e) => {
+                  setServiceCategoryId(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+              >
+                <option value="">Select Care Type</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Skill Filter */}
+            <div>
+              <select
+                value={serviceId}
+                onChange={(e) => {
+                  setSkillIds(e.target.value);
+                  setPage(1);
+                }}
+                className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                 disabled={!serviceCategoryId} 
+              >
+                <option value="">Services</option>
+                {skills.map((skill) => (
+                  <option key={skill.id} value={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             </div>
 
             {/* ✅ Apply Button */}
