@@ -7,10 +7,10 @@ const token = localStorage.getItem("token"); // adjust if stored differently
 // 🔹 Thunk: Fetch skills
 export const getAllSkills = createAsyncThunk(
   "skills/getAllSkills",
-  async (_, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        getSkills, 
+        `${getSkills}/${id}`, 
         {
           headers: {
             Authorization: `Bearer ${token}`,

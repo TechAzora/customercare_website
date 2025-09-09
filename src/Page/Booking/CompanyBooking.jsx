@@ -233,11 +233,11 @@ const handleBooking = async () => {
 
     // Step 2: Open Razorpay checkout
     const options = {
-    //   key: "rzp_test_03ADIbjtraoMGJ",
-      key: "rzp_live_JvkjF5eE8Pz7NR",
+      key: "rzp_test_03ADIbjtraoMGJ",
+    //   key: "rzp_live_JvkjF5eE8Pz7NR",
       amount: total * 100,
       currency,
-      name: "Elder Care Services",
+      name: "careconnect",
       description: `${bookingData.serviceName} - ${calculateTotal().days} days`,
       order_id,
       handler: async function (paymentResponse) {

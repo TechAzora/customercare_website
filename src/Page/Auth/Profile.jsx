@@ -11,7 +11,7 @@ const Profile = () => {
   const [family, setFamily] = useState([]);
   const [bookings, setBookings] = useState([]); 
   const [loading, setLoading] = useState(false);
- 
+   console.log(bookings)
   // Modal state
   const [showModal, setShowModal] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
@@ -333,6 +333,12 @@ const Profile = () => {
                         <p className="text-xs md:text-sm text-gray-500">
                           From: {formatDate(booking.startDate)} → To:{" "}
                           {formatDate(booking.endDate)}
+                        </p>
+                        <p className="text-xs md:text-sm text-gray-500">
+                          Start Code
+: {formatDate(booking.startCode
+)} → End Code :{" "}
+                          {formatDate(booking.endCode)}
                         </p>
                       </div>
                       <div className="text-right">

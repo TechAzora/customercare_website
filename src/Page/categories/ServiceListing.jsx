@@ -24,7 +24,7 @@ const ServiceListing = () => {
   useEffect(() => {
     dispatch(getAllProviders({ search, page, limit, serviceCategoryId, serviceId }));
     dispatch(getAllCategories());
-    dispatch(getAllSkills());
+    dispatch(getAllSkills(serviceCategoryId));
   }, [dispatch, search, page, limit, serviceCategoryId, serviceId]);
 
   const handleSearchChange = (e) => {
@@ -71,6 +71,8 @@ const ServiceListing = () => {
                   setPage(1);
                 }}
                 className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                                 disabled={!serviceCategoryId} 
+
               >
                 <option value="" className="text-primary">
                   Services

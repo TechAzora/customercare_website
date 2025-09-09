@@ -26,7 +26,7 @@ const CompanyServiceListing = () => {
       CompanyGetAllProviders({ search, page, limit, serviceCategoryId, serviceId })
     );
     dispatch(getAllCategories());
-    dispatch(getAllSkills());
+    dispatch(getAllSkills(serviceCategoryId));
   }, [dispatch, search, page, limit, serviceCategoryId, serviceId]);
 
   const handleSearchChange = (e) => {
@@ -78,6 +78,7 @@ const CompanyServiceListing = () => {
                   setPage(1);
                 }}
                 className="border border-primary p-2 rounded-full w-full h-[48px] text-primary"
+                 disabled={!serviceCategoryId} 
               >
                 <option value="">Services</option>
                 {skills.map((skill) => (
