@@ -11,7 +11,7 @@ export const getBlogApi = `${BASE_URL}api/v1/Careconnect/blog/getAllTrue`;
 export const getCategories = `${BASE_URL}api/v1/admin/service/getAllServiceCategories`;
 
 // skill
-export const getSkills = `${BASE_URL}api/v1/admin/skill/getAllSkills`;
+export const getSkills = `${BASE_URL}api/v1/admin/service/getAllServices`;
 
 
 // getServiceApi

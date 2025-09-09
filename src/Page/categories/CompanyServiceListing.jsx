@@ -116,7 +116,7 @@ const CompanyServiceListing = () => {
                   className="px-6 py-2 rounded-full font-medium   text-gray-600 flex items-center justify-center w-1/2 md:w-auto"
                 >
 
-                  Individua
+                  Individual
                 </Link>
                 <button
                   className="px-6 py-2 rounded-full font-medium  text-white bg-[#2B5F75] shadow w-1/2 md:w-auto"
