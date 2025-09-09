@@ -1,46 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
+import React, { useEffect } from "react";
+
 
 const ConvaiWidget = () => {
-  const server = "https://api.vittasarthi.com";
-  const token = localStorage.getItem("accessToken");
-
-  const [profile, setProfile] = useState(null);
-    const [family, setFamily] = useState([]);
-  const [loading, setLoading] = useState(false);
-  // ✅ Fetch profile API
-  const fetchProfile = async () => {
-    if (!token) return;
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        `${server}/api/v1/customer/auth/getCustomerProfile`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      if (res.data.success) {
-        setProfile(res.data.data);
-      }
-    } catch (err) {
-      console.error("Profile fetch error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  // Fetch Family Members
-  const fetchFamily = async () => {
-    try {
-      const res = await axios.get(
-        `${server}/api/v1/customer/familyMember/getFamilyMembers`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (res.data.success) setFamily(res.data.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   // ✅ Load external Convai script once
   useEffect(() => {
     const script = document.createElement("script");
@@ -54,27 +15,17 @@ const ConvaiWidget = () => {
     };
   }, []);
 
-  // ✅ Call API on mount
-  useEffect(() => {
-    fetchProfile();
-        fetchFamily();
 
-  }, []);
-const dynamicVars = {
-  "user_name": profile?.name,
-  "auth_token": token,
-  "family_id":family
-};
   return (
- <>
-    {token && (
+    <>
+      {/* {token && ( */}
       <elevenlabs-convai
         agent-id="agent_9101k4fbjc3sfp7rhws1m5tgyv0q"
       ></elevenlabs-convai>
-    )}
-  </>
+      {/* )} */}
+    </>
 
-);
+  );
 
 }
 export default ConvaiWidget;
